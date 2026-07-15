@@ -1,1 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --color-background: #35273a;
+  --color-primary: #ffb770;
+  --color-primary-light: #ffcfa1;
+  --color-surface: #faf5fe;
+  --color-text: #35273a;
+
+  --content-width: 1440px;
+  --border-radius: 8px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-surface);
+  background-color: var(--color-background);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+main {
+  width: min(100% - 32px, var(--content-width));
+  margin-inline: auto;
+  padding-block: 48px;
+}
+
+h1 {
+  margin: 0;
+  color: var(--color-primary);
+}
