@@ -21,6 +21,6 @@ describe('Home', () => {
   });
   it('should render the page title', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Poll App');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Collect Feedback');
   });
 });

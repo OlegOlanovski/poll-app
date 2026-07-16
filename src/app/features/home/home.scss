@@ -1,0 +1,151 @@
+:host {
+  display: block;
+}
+
+.home {
+  width: min(100% - 32px, 1218px);
+  margin-inline: auto;
+  padding: 92px 0 0;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 712px 426px;
+  column-gap: 80px;
+  align-items: start;
+}
+
+.hero__content {
+  width: 712px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hero h1 {
+  width: 712px;
+  min-height: 178px;
+  margin: 0;
+
+  color: #ffb770;
+  font-family: var(--font-heading);
+  font-size: 100px;
+  font-weight: 400;
+  line-height: 89px;
+  letter-spacing: 0;
+}
+
+.hero__description {
+  width: 666px;
+  min-height: 90px;
+  margin: 36px 0 0;
+
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 30px;
+  letter-spacing: 0;
+}
+
+.hero__button {
+  width: 138px;
+  height: 48px;
+  margin-top: 18px;
+  padding: 12px 16px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  color: #221227;
+  background-color: #ffcfa1;
+  border: 0;
+  border-radius: 10px;
+
+  font-family: var(--font-button);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.hero__button:focus-visible {
+  outline: 3px solid #ffb770;
+  outline-offset: 3px;
+}
+
+.hero__visual {
+  position: relative;
+  isolation: isolate;
+  width: 426px;
+  height: 420px;
+}
+
+.hero__phone {
+  position: relative;
+  z-index: 1;
+  width: 426px;
+  height: 420px;
+}
+
+.hero__decoration {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  height: auto;
+  pointer-events: none;
+}
+
+.hero__decoration--question {
+  top: 0;
+  right: 0;
+  width: 82px;
+}
+
+.hero__decoration--message {
+  top: 92px;
+  left: 0;
+  width: 142px;
+}
+
+.hero__decoration--star {
+  bottom: 0;
+  left: 4px;
+  width: 80px;
+}
+
+.hero__decoration--check {
+  right: -8px;
+  bottom: 40px;
+  z-index: 0;
+  width: 84px;
+}
+
+@media (max-width: 1100px) {
+  .home {
+    padding-top: 64px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    row-gap: 48px;
+  }
+
+  .hero__content,
+  .hero h1,
+  .hero__description {
+    width: 100%;
+  }
+
+  .hero h1 {
+    min-height: auto;
+    font-size: clamp(56px, 12vw, 90px);
+    line-height: 0.9;
+  }
+
+  .hero__visual {
+    justify-self: center;
+  }
+}
