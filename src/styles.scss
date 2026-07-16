@@ -1,9 +1,45 @@
+@font-face {
+  font-family: 'Nerko One';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/NerkoOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/Mulish-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Mulish';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/assets/fonts/Mulish-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Nokora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/fonts/Nokora-Bold.ttf') format('truetype');
+}
+
 :root {
   --color-background: #35273a;
   --color-primary: #ffb770;
   --color-primary-light: #ffcfa1;
   --color-surface: #faf5fe;
   --color-text: #35273a;
+
+  --font-heading: 'Nerko One', cursive;
+  --font-body: 'Mulish', sans-serif;
+  --font-button: 'Nokora', sans-serif;
 
   --content-width: 1440px;
   --border-radius: 8px;
@@ -23,9 +59,11 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
+
   color: var(--color-surface);
   background-color: var(--color-background);
+
+  font-family: var(--font-body);
 }
 
 button,
@@ -58,4 +96,6 @@ main {
 h1 {
   margin: 0;
   color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-weight: 400;
 }
