@@ -6,6 +6,9 @@
   width: min(100% - 32px, 1218px);
   margin-inline: auto;
   padding: 92px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 90px;
 }
 
 .hero {
@@ -121,6 +124,58 @@
   bottom: 40px;
   z-index: 0;
   width: 84px;
+}
+.surveys-preview {
+  width: 1042px;
+  height: 522px;
+  margin-inline: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.surveys-preview__title {
+  width: 1042px;
+  height: 82px;
+  margin: 0;
+
+  color: #ffb770;
+  font-family: var(--font-heading);
+  font-size: 72px;
+  font-weight: 400;
+  line-height: 72px;
+  text-align: center;
+}
+
+.surveys-preview__urgent {
+  width: 1042px;
+  height: 360px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.surveys-preview__subtitle {
+  width: 1042px;
+  height: 42px;
+  margin: 0;
+
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 32px;
+}
+
+.surveys-preview__grid {
+  width: 1042px;
+  height: 310px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 321px);
+  justify-content: space-between;
 }
 
 @media (max-width: 1100px) {

@@ -29,4 +29,21 @@
             <img class="hero__decoration hero__decoration--check" src="/assets/icon/check.svg" alt="" />
         </div>
     </section>
+    <section class="surveys-preview" aria-labelledby="surveys-title">
+        <h2 id="surveys-title" class="surveys-preview__title">
+            Your surveys
+        </h2>
+
+        <div class="surveys-preview__urgent">
+            <p class="surveys-preview__subtitle">
+                Ending soon surveys
+            </p>
+
+            <div class="surveys-preview__grid">
+                @for (survey of urgentSurveys; track survey.id) {
+                <app-survey-card [survey]="survey" />
+                }
+            </div>
+        </div>
+    </section>
 </main>

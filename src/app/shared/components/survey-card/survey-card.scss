@@ -1,0 +1,67 @@
+:host {
+  display: block;
+  width: 321px;
+}
+
+.survey-card {
+  width: 321px;
+  height: 310px;
+  padding: 40px 18px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+
+  color: #35273a;
+  background-color: #faf5fe;
+  border-top-right-radius: 80px;
+  overflow: hidden;
+}
+
+.survey-card__category {
+  width: 233px;
+  min-height: 18px;
+  margin: 0;
+
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 14px;
+}
+
+.survey-card__title {
+  width: 220px;
+  margin: 0;
+
+  font-family: var(--font-body);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.survey-card__footer {
+  width: 233px;
+  height: 21px;
+  margin-top: auto;
+
+  display: flex;
+  align-items: center;
+}
+
+.survey-card__badge {
+  min-height: 21px;
+  padding: 3px 4px;
+
+  display: inline-flex;
+  align-items: center;
+
+  color: #35273a;
+  background-color: #ffcfa1;
+
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 15px;
+  white-space: nowrap;
+}
