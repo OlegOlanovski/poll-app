@@ -1,13 +1,13 @@
 import { Component, computed, signal } from '@angular/core';
-
+import { RouterLink } from '@angular/router';
 import { SurveyCard } from '../../shared/components/survey-card/survey-card';
 import { SurveyListCard } from '../../shared/components/survey-list-card/survey-list-card';
 import { SurveyPreview, SurveyStatus } from '../../shared/models/survey-preview';
 import { createRelativeEndDate, sortSurveysByEndDate } from '../../shared/utils/survey-date';
-
+import { Header } from '../../shared/components/header/header';
 @Component({
   selector: 'app-home',
-  imports: [SurveyCard, SurveyListCard],
+  imports: [Header, RouterLink, SurveyCard, SurveyListCard],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })

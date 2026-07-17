@@ -1,0 +1,258 @@
+<main class="create-survey-page">
+  <section class="create-survey" aria-labelledby="create-survey-title">
+    <header class="create-survey__header">
+      <div class="create-survey__heading">
+        <p class="create-survey__status">Draft</p>
+
+        <h1 id="create-survey-title">Create new survey</h1>
+      </div>
+
+      <a class="create-survey__cancel" routerLink="/">
+        <span>Cancel</span>
+        <span class="create-survey__close-icon" aria-hidden="true">×</span>
+      </a>
+    </header>
+
+    <form
+      class="create-survey-form"
+      [formGroup]="surveyForm"
+      (ngSubmit)="publishSurvey()"
+      novalidate
+    >
+      <section class="create-survey-form__panel" aria-label="Survey information and questions">
+        <section class="create-survey-form__information" aria-label="Survey information">
+          <div class="create-survey-form__metadata">
+            <div class="create-survey-form__field">
+              <label for="survey-title">
+                Survey name
+                <strong class="required-marker" aria-label="required">*</strong>
+              </label>
+
+              <div class="create-survey-form__input-action">
+                <input
+                  id="survey-title"
+                  type="text"
+                  formControlName="title"
+                  [attr.aria-invalid]="
+                    surveyForm.controls.title.touched && surveyForm.controls.title.invalid
+                  "
+                  required
+                />
+
+                <button
+                  type="button"
+                  aria-label="Clear survey name"
+                  (click)="clearSurveyField('title')"
+                >
+                  <img src="/assets/icon/Delete.svg" width="24" height="24" alt="" />
+                </button>
+              </div>
+
+              @if (surveyForm.controls.title.touched && surveyForm.controls.title.invalid) {
+                <p class="create-survey-form__error" role="alert">
+                  Enter a survey name with at least 3 characters.
+                </p>
+              }
+            </div>
+
+            <div class="create-survey-form__metadata-row">
+              <div class="create-survey-form__field">
+                <label for="survey-end-date"> Set end date <span>(optional)</span> </label>
+
+                <div class="create-survey-form__input-action">
+                  <input id="survey-end-date" type="date" formControlName="endDate" />
+
+                  <button
+                    type="button"
+                    aria-label="Clear survey end date"
+                    (click)="clearSurveyField('endDate')"
+                  >
+                    <img src="/assets/icon/Delete.svg" width="24" height="24" alt="" />
+                  </button>
+                </div>
+              </div>
+
+              <div class="create-survey-form__field create-survey-form__category">
+                <label class="visually-hidden" for="survey-category">
+                  Choose category
+                  <strong aria-label="required">*</strong>
+                </label>
+
+                <select
+                  id="survey-category"
+                  formControlName="category"
+                  [attr.aria-invalid]="
+                    surveyForm.controls.category.touched && surveyForm.controls.category.invalid
+                  "
+                  required
+                >
+                  <option value="">Choose category *</option>
+
+                  @for (category of categories; track category) {
+                    <option [value]="category">{{ category }}</option>
+                  }
+                </select>
+
+                @if (surveyForm.controls.category.touched && surveyForm.controls.category.invalid) {
+                  <p class="create-survey-form__error" role="alert">Select a category.</p>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="create-survey-form__field create-survey-form__description">
+            <label for="survey-description"> Describing text <span>(optional)</span> </label>
+
+            <div class="create-survey-form__input-action">
+              <textarea id="survey-description" formControlName="description" rows="4"></textarea>
+
+              <button
+                type="button"
+                aria-label="Clear survey description"
+                (click)="clearSurveyField('description')"
+              >
+                <img src="/assets/icon/Delete.svg" width="24" height="24" alt="" />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="create-survey-form__questions"
+          formArrayName="questions"
+          aria-labelledby="survey-questions-title"
+        >
+          <h2 id="survey-questions-title" class="visually-hidden">Survey questions</h2>
+
+          @for (
+            questionGroup of questions.controls;
+            track questionGroup;
+            let questionIndex = $index
+          ) {
+            <fieldset class="question-form" [formGroupName]="questionIndex">
+              <legend class="question-form__header">
+                <span>{{ questionIndex + 1 }}. Question</span>
+
+                <button
+                  type="button"
+                  [attr.aria-label]="
+                    questionIndex === 0
+                      ? 'Clear question 1'
+                      : 'Delete question ' + (questionIndex + 1)
+                  "
+                  (click)="deleteQuestion(questionIndex)"
+                >
+                  <img src="/assets/icon/Delete.svg" width="24" height="24" alt="" />
+                </button>
+              </legend>
+
+              <label class="visually-hidden" [for]="'question-' + questionIndex">
+                Question {{ questionIndex + 1 }}
+              </label>
+
+              <input
+                [id]="'question-' + questionIndex"
+                class="question-form__question-input"
+                type="text"
+                formControlName="question"
+                placeholder="Enter your question"
+                [attr.aria-invalid]="
+                  questionGroup.controls.question.touched && questionGroup.controls.question.invalid
+                "
+                required
+              />
+
+              @if (
+                questionGroup.controls.question.touched && questionGroup.controls.question.invalid
+              ) {
+                <p class="create-survey-form__error" role="alert">Enter a question.</p>
+              }
+
+              <div class="question-form__answers-header">
+                <h3>Answers</h3>
+
+                <label class="question-form__multiple">
+                  <input type="checkbox" formControlName="allowMultipleAnswers" />
+                  <span>Allow multiple answers.</span>
+                </label>
+              </div>
+
+              <section
+                class="question-form__answers"
+                formArrayName="answers"
+                aria-label="Answer options"
+              >
+                @for (
+                  answerControl of getAnswers(questionIndex).controls;
+                  track answerControl;
+                  let answerIndex = $index
+                ) {
+                  <div class="question-form__answer">
+                    <label [for]="'question-' + questionIndex + '-answer-' + answerIndex">
+                      {{ getAnswerLabel(answerIndex) }}.
+                    </label>
+
+                    <input
+                      [id]="'question-' + questionIndex + '-answer-' + answerIndex"
+                      type="text"
+                      [formControlName]="answerIndex"
+                      [attr.aria-invalid]="answerControl.touched && answerControl.invalid"
+                      required
+                    />
+
+                    <button
+                      type="button"
+                      [attr.aria-label]="'Clear or delete answer ' + getAnswerLabel(answerIndex)"
+                      (click)="deleteAnswer(questionIndex, answerIndex)"
+                    >
+                      <img src="/assets/icon/Delete.svg" width="24" height="24" alt="" />
+                    </button>
+
+                    @if (answerControl.touched && answerControl.invalid) {
+                      <p class="create-survey-form__error" role="alert">Enter an answer.</p>
+                    }
+                  </div>
+                }
+              </section>
+
+              <button
+                class="question-form__add-answer"
+                type="button"
+                (click)="addAnswer(questionIndex)"
+              >
+                <span>Add answer</span>
+                <img src="/assets/icon/add_circle.svg" width="20" height="20" alt="" />
+              </button>
+            </fieldset>
+          }
+
+          <button class="create-survey-form__add-question" type="button" (click)="addQuestion()">
+            <span>Add next question</span>
+            <img src="/assets/icon/add_circle.svg" width="24" height="24" alt="" />
+          </button>
+        </section>
+      </section>
+
+      <footer class="create-survey-form__actions">
+        <button type="submit">Publish</button>
+      </footer>
+    </form>
+  </section>
+</main>
+
+@if (isConfirmationVisible()) {
+  <section
+    class="confirmation-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="confirmation-title"
+  >
+    <article class="confirmation-message">
+      <h2 id="confirmation-title">Survey published!</h2>
+
+      <p>Your new survey was created successfully.</p>
+
+      <button type="button" (click)="closeConfirmation()">Continue</button>
+    </article>
+  </section>
+}

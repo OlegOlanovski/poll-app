@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { Home } from './home';
 
@@ -6,9 +7,10 @@ describe('Home', () => {
   let component: Home;
   let fixture: ComponentFixture<Home>;
 
-  beforeEach(async () => {
+  beforeEach(async (): Promise<void> => {
     await TestBed.configureTestingModule({
       imports: [Home],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Home);
@@ -16,19 +18,19 @@ describe('Home', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', (): void => {
     expect(component).toBeTruthy();
   });
-  it('should render the page title', () => {
+  it('should render the page title', (): void => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain('Collect Feedback');
   });
-  it('should show active surveys by default', () => {
+  it('should show active surveys by default', (): void => {
     expect(component.selectedStatus()).toBe('active');
     expect(component.filteredSurveys()).toHaveLength(6);
   });
 
-  it('should show past surveys after selecting past status', () => {
+  it('should show past surveys after selecting past status', (): void => {
     component.selectStatus('past');
 
     expect(component.selectedStatus()).toBe('past');

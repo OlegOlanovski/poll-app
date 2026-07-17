@@ -1,77 +1,88 @@
+<app-header />
+
 <main class="home">
-    <section class="hero">
-        <div class="hero__content">
-            <h1>
-                Collect Feedback,<br />
-                Unlock Ideas
-            </h1>
+  <section class="hero">
+    <div class="hero__content">
+      <h1>
+        Collect Feedback,<br />
+        Unlock Ideas
+      </h1>
 
-            <p class="hero__description">
-                Create and share surveys in minutes – from team events to workplace
-                culture. Collect opinions, engage your audience, and turn feedback into
-                action.
-            </p>
+      <p class="hero__description">
+        Create and share surveys in minutes – from team events to workplace culture. Collect
+        opinions, engage your audience, and turn feedback into action.
+      </p>
 
-            <button class="hero__button" type="button">
-                New survey
-            </button>
-        </div>
+      <a class="hero__button" routerLink="/create-survey"> New survey </a>
+    </div>
 
-        <div class="hero__visual" aria-hidden="true">
-            <img class="hero__phone" src="/assets/icon/handy-check.png" width="426" height="420" alt="" />
+    <div class="hero__visual" aria-hidden="true">
+      <img class="hero__phone" src="/assets/icon/handy-check.png" width="426" height="420" alt="" />
 
-            <img class="hero__decoration hero__decoration--question" src="/assets/icon/questin-mark.svg" alt="" />
+      <img
+        class="hero__decoration hero__decoration--question"
+        src="/assets/icon/questin-mark.svg"
+        alt=""
+      />
 
-            <img class="hero__decoration hero__decoration--message" src="/assets/icon/typing-bubble.svg" alt="" />
+      <img
+        class="hero__decoration hero__decoration--message"
+        src="/assets/icon/typing-bubble.svg"
+        alt=""
+      />
 
-            <img class="hero__decoration hero__decoration--star" src="/assets/icon/star.svg" alt="" />
+      <img class="hero__decoration hero__decoration--star" src="/assets/icon/star.svg" alt="" />
 
-            <img class="hero__decoration hero__decoration--check" src="/assets/icon/check.svg" alt="" />
-        </div>
-    </section>
-    <section class="surveys-preview" aria-labelledby="surveys-title">
-        <h2 id="surveys-title" class="surveys-preview__title">
-            Your surveys
-        </h2>
+      <img class="hero__decoration hero__decoration--check" src="/assets/icon/check.svg" alt="" />
+    </div>
+  </section>
+  <section class="surveys-preview" aria-labelledby="surveys-title">
+    <h2 id="surveys-title" class="surveys-preview__title">Your surveys</h2>
 
-        <div class="surveys-preview__urgent">
-            <p class="surveys-preview__subtitle">
-                Ending soon surveys
-            </p>
+    <div class="surveys-preview__urgent">
+      <p class="surveys-preview__subtitle">Ending soon surveys</p>
 
-            <div class="surveys-preview__grid">
-                @for (survey of urgentSurveys; track survey.id) {
-                <app-survey-card [survey]="survey" />
-                }
-            </div>
-        </div>
-    </section>
-    <section class="survey-browser" aria-label="Survey list">
-        <div class="survey-browser__filters">
-            <div class="survey-browser__status-filters">
-                <button class="survey-browser__status-button survey-browser__status-button--active" type="button"
-                    [class.survey-browser__status-button--selected]="selectedStatus() === 'active'"
-                    [attr.aria-pressed]="selectedStatus() === 'active'" (click)="selectStatus('active')">
-                    Active survey
-                </button>
+      <div class="surveys-preview__grid">
+        @for (survey of urgentSurveys; track survey.id) {
+          <app-survey-card [survey]="survey" />
+        }
+      </div>
+    </div>
+  </section>
+  <section class="survey-browser" aria-label="Survey list">
+    <div class="survey-browser__filters">
+      <div class="survey-browser__status-filters">
+        <button
+          class="survey-browser__status-button survey-browser__status-button--active"
+          type="button"
+          [class.survey-browser__status-button--selected]="selectedStatus() === 'active'"
+          [attr.aria-pressed]="selectedStatus() === 'active'"
+          (click)="selectStatus('active')"
+        >
+          Active survey
+        </button>
 
-                <button class="survey-browser__status-button survey-browser__status-button--past" type="button"
-                    [class.survey-browser__status-button--selected]="selectedStatus() === 'past'"
-                    [attr.aria-pressed]="selectedStatus() === 'past'" (click)="selectStatus('past')">
-                    Past survey
-                </button>
-            </div>
+        <button
+          class="survey-browser__status-button survey-browser__status-button--past"
+          type="button"
+          [class.survey-browser__status-button--selected]="selectedStatus() === 'past'"
+          [attr.aria-pressed]="selectedStatus() === 'past'"
+          (click)="selectStatus('past')"
+        >
+          Past survey
+        </button>
+      </div>
 
-            <button class="survey-browser__category-filter" type="button">
-                <span>Sort by categories</span>
-                <span class="survey-browser__arrow" aria-hidden="true"></span>
-            </button>
-        </div>
+      <button class="survey-browser__category-filter" type="button">
+        <span>Sort by categories</span>
+        <span class="survey-browser__arrow" aria-hidden="true"></span>
+      </button>
+    </div>
 
-        <div class="survey-browser__list">
-            @for (survey of filteredSurveys(); track survey.id) {
-            <app-survey-list-card [survey]="survey" />
-            }
-        </div>
-    </section>
+    <div class="survey-browser__list">
+      @for (survey of filteredSurveys(); track survey.id) {
+        <app-survey-list-card [survey]="survey" />
+      }
+    </div>
+  </section>
 </main>
