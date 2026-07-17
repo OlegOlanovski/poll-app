@@ -6,9 +6,6 @@
   width: min(100% - 32px, 1218px);
   margin-inline: auto;
   padding: 92px 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 90px;
 }
 
 .hero {
@@ -128,7 +125,7 @@
 .surveys-preview {
   width: 1042px;
   height: 522px;
-  margin-inline: auto;
+  margin: 90px auto 0;
 
   display: flex;
   flex-direction: column;
@@ -176,6 +173,111 @@
   display: grid;
   grid-template-columns: repeat(3, 321px);
   justify-content: space-between;
+}
+.survey-browser {
+  width: 1042px;
+  height: 478px;
+  margin: 40px auto 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.survey-browser__filters {
+  width: 1042px;
+  height: 25px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.survey-browser__status-filters {
+  width: 249px;
+  height: 25px;
+
+  display: flex;
+  gap: 24px;
+}
+
+.survey-browser__status-button {
+  height: 25px;
+  padding: 2px 10px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  color: #35273a;
+  border: 0;
+  border-radius: 20px;
+
+  font-family: var(--font-button);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.survey-browser__status-button--active {
+  width: 119px;
+  background-color: #ffb770;
+}
+
+.survey-browser__status-button--past {
+  width: 106px;
+  background-color: #fee9d4;
+}
+
+.survey-browser__category-filter {
+  width: 206px;
+  height: 32px;
+  padding: 4px 6px 4px 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: #ffffff;
+  background-color: transparent;
+  border: 0;
+  border-radius: 6px;
+
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.survey-browser__arrow {
+  width: 24px;
+  height: 24px;
+
+  display: grid;
+  place-items: center;
+}
+
+.survey-browser__arrow::before {
+  width: 0;
+  height: 0;
+
+  content: '';
+  border-top: 8px solid #ffffff;
+  border-right: 7.5px solid transparent;
+  border-left: 7.5px solid transparent;
+}
+
+.survey-browser__list {
+  width: 1042px;
+  height: 413px;
+
+  display: grid;
+  grid-template-columns: repeat(2, 513px);
+  grid-template-rows: repeat(3, 127px);
+  gap: 16px;
 }
 
 @media (max-width: 1100px) {

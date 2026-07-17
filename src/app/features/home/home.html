@@ -46,4 +46,28 @@
             </div>
         </div>
     </section>
+    <section class="survey-browser" aria-label="Survey list">
+        <div class="survey-browser__filters">
+            <div class="survey-browser__status-filters">
+                <button class="survey-browser__status-button survey-browser__status-button--active" type="button">
+                    Active survey
+                </button>
+
+                <button class="survey-browser__status-button survey-browser__status-button--past" type="button">
+                    Past survey
+                </button>
+            </div>
+
+            <button class="survey-browser__category-filter" type="button">
+                <span>Sort by categories</span>
+                <span class="survey-browser__arrow" aria-hidden="true"></span>
+            </button>
+        </div>
+
+        <div class="survey-browser__list">
+            @for (survey of allSurveys; track survey.id) {
+            <app-survey-list-card [survey]="survey" />
+            }
+        </div>
+    </section>
 </main>
