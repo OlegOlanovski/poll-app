@@ -211,6 +211,7 @@
   gap: 10px;
 
   color: #35273a;
+  background-color: #fee9d4;
   border: 0;
   border-radius: 20px;
 
@@ -223,12 +224,14 @@
 
 .survey-browser__status-button--active {
   width: 119px;
-  background-color: #ffb770;
 }
 
 .survey-browser__status-button--past {
   width: 106px;
-  background-color: #fee9d4;
+}
+
+.survey-browser__status-button--selected {
+  background-color: #ffb770;
 }
 
 .survey-browser__category-filter {

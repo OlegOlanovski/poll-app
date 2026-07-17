@@ -18,6 +18,7 @@ describe('SurveyListCard', () => {
       category: 'Team activities',
       title: 'Test survey',
       daysRemaining: 1,
+      status: 'active',
     });
 
     component = fixture.componentInstance;
@@ -26,5 +27,18 @@ describe('SurveyListCard', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  it('should show expired label for a past survey', () => {
+    fixture.componentRef.setInput('survey', {
+      id: 'past-survey',
+      category: 'Team activities',
+      title: 'Past survey',
+      daysRemaining: 0,
+      status: 'past',
+    });
+
+    fixture.detectChanges();
+
+    expect(component.endingLabel()).toBe('Expired');
   });
 });

@@ -11,9 +11,14 @@ export class SurveyListCard {
   readonly survey = input.required<SurveyPreview>();
 
   readonly endingLabel = computed(() => {
-    const days = this.survey().daysRemaining;
-    const dayLabel = days === 1 ? 'Day' : 'Days';
+    const survey = this.survey();
 
-    return `Ends in ${days} ${dayLabel}`;
+    if (survey.status === 'past') {
+      return 'Expired';
+    }
+
+    const dayLabel = survey.daysRemaining === 1 ? 'Day' : 'Days';
+
+    return `Ends in ${survey.daysRemaining} ${dayLabel}`;
   });
 }
