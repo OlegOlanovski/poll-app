@@ -1,17 +1,19 @@
 <article class="survey-list-card">
-    <div class="survey-list-card__content">
-        <p class="survey-list-card__category">
-            {{ survey().category }}
-        </p>
+    <p class="survey-list-card__category">
+        {{ survey().category }}
+    </p>
 
-        <h3 class="survey-list-card__title">
-            {{ survey().title }}
-        </h3>
-    </div>
+    <h3 class="survey-list-card__title">
+        {{ survey().title }}
+    </h3>
 
-    <div class="survey-list-card__footer">
+    <p class="survey-list-card__description">
+        {{ survey().description }}
+    </p>
+
+    <footer class="survey-list-card__footer">
         <span class="survey-list-card__badge">
             {{ endingLabel() }}
         </span>
-    </div>
+    </footer>
 </article>

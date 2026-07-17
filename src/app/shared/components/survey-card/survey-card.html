@@ -7,9 +7,13 @@
         {{ survey().title }}
     </h3>
 
-    <div class="survey-card__footer">
+    <p class="survey-card__description">
+        {{ survey().description }}
+    </p>
+
+    <footer class="survey-card__footer">
         <span class="survey-card__badge">
             {{ endingLabel() }}
         </span>
-    </div>
+    </footer>
 </article>

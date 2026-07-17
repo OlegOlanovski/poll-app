@@ -39,6 +39,16 @@
   font-weight: 700;
   line-height: 1;
 }
+.survey-card__description {
+  width: 260px;
+  margin: 0;
+
+  color: #35273a;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+}
 
 .survey-card__footer {
   width: 233px;

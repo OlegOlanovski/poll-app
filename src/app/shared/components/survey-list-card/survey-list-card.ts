@@ -1,5 +1,7 @@
 import { Component, computed, input } from '@angular/core';
+
 import { SurveyPreview } from '../../models/survey-preview';
+import { formatDeadline } from '../../utils/survey-date';
 
 @Component({
   selector: 'app-survey-list-card',
@@ -10,15 +12,5 @@ import { SurveyPreview } from '../../models/survey-preview';
 export class SurveyListCard {
   readonly survey = input.required<SurveyPreview>();
 
-  readonly endingLabel = computed(() => {
-    const survey = this.survey();
-
-    if (survey.status === 'past') {
-      return 'Expired';
-    }
-
-    const dayLabel = survey.daysRemaining === 1 ? 'Day' : 'Days';
-
-    return `Ends in ${survey.daysRemaining} ${dayLabel}`;
-  });
+  readonly endingLabel = computed<string>(() => formatDeadline(this.survey().endDate));
 }

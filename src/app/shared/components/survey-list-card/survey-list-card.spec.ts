@@ -17,7 +17,8 @@ describe('SurveyListCard', () => {
       id: 'test-list-survey',
       category: 'Team activities',
       title: 'Test survey',
-      daysRemaining: 1,
+      description: 'A short description for the active survey.',
+      endDate: '2099-01-01T00:00:00.000Z',
       status: 'active',
     });
 
@@ -33,7 +34,8 @@ describe('SurveyListCard', () => {
       id: 'past-survey',
       category: 'Team activities',
       title: 'Past survey',
-      daysRemaining: 0,
+      description: 'A short description for the completed survey.',
+      endDate: '2020-01-01T00:00:00.000Z',
       status: 'past',
     });
 
