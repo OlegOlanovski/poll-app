@@ -93,11 +93,85 @@
   height: 420px;
 }
 
+.hero__visual::before,
+.hero__visual::after {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  content: '';
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.hero__visual::before {
+  z-index: 2;
+  top: 311px;
+  left: 87px;
+  width: 29px;
+  height: 29px;
+  background-color: #35273a;
+}
+
+.hero__visual::after {
+  z-index: 4;
+  top: 314px;
+  left: 90px;
+  width: 23px;
+  height: 23px;
+  background-color: #6c5690;
+}
+
 .hero__phone {
   position: relative;
   z-index: 1;
   width: 426px;
   height: 420px;
+}
+
+.hero__accent {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.hero__accent--question-dot-cover {
+  z-index: 2;
+  top: 70px;
+  left: 360px;
+  width: 31px;
+  height: 31px;
+  background-color: #35273a;
+  border-radius: 50%;
+}
+
+.hero__accent--question-dot {
+  z-index: 3;
+  top: 73px;
+  left: 363px;
+  width: 24px;
+  height: 24px;
+  background-color: #ffb770;
+  border-radius: 50%;
+}
+
+.hero__accent--cube-cover {
+  z-index: 1;
+  top: 168px;
+  left: 112px;
+  width: 20px;
+  height: 31px;
+  background-color: #35273a;
+}
+
+.hero__accent--cube {
+  z-index: 1;
+  top: 170px;
+  left: 116px;
+  width: 26px;
+  height: 26px;
+  background-color: #754298;
+  border-radius: 2px;
 }
 
 .hero__decoration {
@@ -115,22 +189,127 @@
 }
 
 .hero__decoration--message {
-  top: 92px;
-  left: 0;
-  width: 142px;
+  top: 97px;
+  left: 76px;
+  width: 105px;
 }
 
 .hero__decoration--star {
-  bottom: 0;
-  left: 4px;
+  bottom: 40px;
+  left: 56px;
+  z-index: 3;
   width: 80px;
 }
 
 .hero__decoration--check {
-  right: -8px;
-  bottom: 40px;
+  top: 258px;
+  left: 277px;
   z-index: 0;
-  width: 84px;
+  width: 80px;
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 1101px) and (prefers-reduced-motion: no-preference) {
+  .hero__decoration--question {
+    transition:
+      top 620ms cubic-bezier(0.22, 1, 0.36, 1),
+      right 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero__accent--question-dot-cover,
+  .hero__accent--cube-cover {
+    transition: opacity 120ms ease;
+  }
+
+  .hero__accent--question-dot {
+    transition:
+      top 620ms cubic-bezier(0.22, 1, 0.36, 1),
+      left 620ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 160ms ease;
+  }
+
+  .hero__accent--cube {
+    transition:
+      top 580ms cubic-bezier(0.22, 1, 0.36, 1) 40ms,
+      left 580ms cubic-bezier(0.22, 1, 0.36, 1) 40ms,
+      opacity 160ms ease 40ms;
+  }
+
+  .hero__decoration--message {
+    transition:
+      top 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      left 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      width 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero__visual::before {
+    transition: opacity 120ms ease;
+  }
+
+  .hero__visual::after {
+    transition:
+      top 760ms cubic-bezier(0.22, 1, 0.36, 1) 80ms,
+      left 760ms cubic-bezier(0.22, 1, 0.36, 1) 80ms,
+      opacity 160ms ease 80ms;
+  }
+
+  .hero__decoration--check {
+    transition:
+      top 680ms cubic-bezier(0.22, 1, 0.36, 1) 40ms,
+      left 680ms cubic-bezier(0.22, 1, 0.36, 1) 40ms,
+      width 680ms cubic-bezier(0.34, 1.56, 0.64, 1) 40ms;
+  }
+
+  .hero__decoration--star {
+    transition: left 760ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
+  }
+
+  .hero__visual:hover .hero__decoration--message {
+    top: 59px;
+    left: 14px;
+    width: 177px;
+  }
+
+  .hero__visual:hover .hero__decoration--question {
+    top: -3px;
+    right: 11px;
+  }
+
+  .hero__visual:hover .hero__accent--question-dot-cover,
+  .hero__visual:hover .hero__accent--question-dot,
+  .hero__visual:hover .hero__accent--cube-cover,
+  .hero__visual:hover .hero__accent--cube {
+    opacity: 1;
+  }
+
+  .hero__visual:hover .hero__accent--question-dot {
+    top: 78px;
+    left: 374px;
+  }
+
+  .hero__visual:hover .hero__accent--cube {
+    top: 151px;
+    left: 104px;
+  }
+
+  .hero__visual:hover::before,
+  .hero__visual:hover::after {
+    opacity: 1;
+  }
+
+  .hero__visual:hover::after {
+    top: 382px;
+    left: 25px;
+  }
+
+  .hero__visual:hover .hero__decoration--star {
+    left: 40px;
+  }
+
+  .hero__visual:hover .hero__decoration--check {
+    top: 255px;
+    left: 326px;
+    width: 94px;
+  }
 }
 .surveys-preview {
   width: 1042px;
