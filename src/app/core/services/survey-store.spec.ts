@@ -5,7 +5,7 @@ import { Survey } from '../../shared/models/survey';
 import { SurveyStore } from './survey-store';
 
 const TEST_SURVEY_DATA: CreateSurveyData = {
-  category: 'Team activities',
+  category: 'Team Activities',
   title: 'Test survey',
   description: 'Test description',
   endDate: '',
@@ -22,6 +22,7 @@ describe('SurveyStore', () => {
   let service: SurveyStore;
 
   beforeEach((): void => {
+    localStorage.clear();
     TestBed.configureTestingModule({});
     service = TestBed.inject(SurveyStore);
   });

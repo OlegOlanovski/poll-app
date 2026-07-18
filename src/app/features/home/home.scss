@@ -2,6 +2,16 @@
   display: block;
 }
 
+.survey-link {
+  display: block;
+  border-radius: 5px 50px 5px 5px;
+}
+
+.survey-link:focus-visible {
+  outline: 3px solid #ffb770;
+  outline-offset: 4px;
+}
+
 .home {
   width: min(100% - 32px, 1218px);
   margin-inline: auto;
@@ -234,6 +244,11 @@
   background-color: #ffb770;
 }
 
+.survey-browser__category-control {
+  position: relative;
+  width: 206px;
+}
+
 .survey-browser__category-filter {
   width: 206px;
   height: 32px;
@@ -255,6 +270,10 @@
   white-space: nowrap;
 }
 
+.survey-browser__category-filter--open {
+  background-color: rgb(217 217 217 / 12%);
+}
+
 .survey-browser__arrow {
   width: 24px;
   height: 24px;
@@ -271,6 +290,80 @@
   border-top: 8px solid #ffffff;
   border-right: 7.5px solid transparent;
   border-left: 7.5px solid transparent;
+}
+
+.survey-browser__category-filter--open .survey-browser__arrow::before {
+  border-top-color: #ffb770;
+  transform: rotate(180deg);
+}
+
+.survey-browser__category-menu {
+  position: absolute;
+  z-index: 2;
+  top: 36px;
+  right: 0;
+
+  width: 206px;
+  height: 192px;
+  margin: 0;
+  padding: 8px 4px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  list-style: none;
+  background-color: #ffffff;
+  border-radius: 6px;
+}
+
+.survey-browser__category-menu li {
+  height: 26px;
+}
+
+.survey-browser__category-option {
+  width: 100%;
+  height: 26px;
+  padding: 4px 10px;
+
+  display: flex;
+  align-items: center;
+
+  color: #35273a;
+  background-color: transparent;
+  border: 0;
+  border-radius: 6px;
+
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.survey-browser__category-option:hover,
+.survey-browser__category-option:focus-visible {
+  background-color: #fee9d4;
+}
+
+.survey-browser__category-option--selected {
+  color: #ffb770;
+}
+
+.survey-browser__selected-category {
+  margin-top: 8px;
+  padding: 0 10px;
+
+  color: #ffb770;
+  background-color: transparent;
+  border: 0;
+
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.02em;
 }
 
 .survey-browser__list {

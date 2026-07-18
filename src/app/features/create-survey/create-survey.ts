@@ -10,18 +10,12 @@ import {
 import { Router, RouterLink } from '@angular/router';
 
 import { SurveyStore } from '../../core/services/survey-store';
+import { SURVEY_CATEGORIES, SurveyCategory } from '../../shared/constants/survey-categories';
 import { CreateSurveyData } from '../../shared/models/create-survey-data';
 
 const FIRST_ANSWER_CHARACTER_CODE = 65;
 const MIN_ANSWER_COUNT = 2;
 const MIN_TITLE_LENGTH = 3;
-const SURVEY_CATEGORIES = [
-  'Team activities',
-  'Gaming',
-  'Health & Wellness',
-  'Healthy Lifestyle',
-] as const;
-
 type AnswerControl = FormControl<string>;
 type ClearableSurveyField = 'title' | 'endDate' | 'description';
 
@@ -43,6 +37,7 @@ export class CreateSurvey {
   private readonly surveyStore = inject(SurveyStore);
 
   readonly isConfirmationVisible = signal(false);
+  readonly isCategoryMenuOpen = signal(false);
   readonly publishedSurveyId = signal<string | null>(null);
   readonly categories = SURVEY_CATEGORIES;
 
@@ -72,6 +67,28 @@ export class CreateSurvey {
   /** Clears one of the survey information fields. */
   clearSurveyField(field: ClearableSurveyField): void {
     this.surveyForm.controls[field].reset();
+  }
+
+  /** Opens or closes the category menu. */
+  toggleCategoryMenu(): void {
+    if (this.isCategoryMenuOpen()) {
+      this.surveyForm.controls.category.markAsTouched();
+    }
+
+    this.isCategoryMenuOpen.update((isOpen: boolean): boolean => !isOpen);
+  }
+
+  /** Stores the selected required category. */
+  selectCategory(category: SurveyCategory): void {
+    this.surveyForm.controls.category.setValue(category);
+    this.surveyForm.controls.category.markAsTouched();
+    this.isCategoryMenuOpen.set(false);
+  }
+
+  /** Clears the selected category. */
+  clearCategory(): void {
+    this.surveyForm.controls.category.reset();
+    this.surveyForm.controls.category.markAsTouched();
   }
 
   /** Adds a new question to the survey. */

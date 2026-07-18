@@ -43,8 +43,14 @@
       <p class="surveys-preview__subtitle">Ending soon surveys</p>
 
       <div class="surveys-preview__grid">
-        @for (survey of urgentSurveys; track survey.id) {
-          <app-survey-card [survey]="survey" />
+        @for (survey of urgentSurveys(); track survey.id) {
+          <a
+            class="survey-link"
+            [routerLink]="['/surveys', survey.id]"
+            [attr.aria-label]="'Open survey ' + survey.title"
+          >
+            <app-survey-card [survey]="survey" />
+          </a>
         }
       </div>
     </div>
@@ -73,15 +79,66 @@
         </button>
       </div>
 
-      <button class="survey-browser__category-filter" type="button">
-        <span>Sort by categories</span>
-        <span class="survey-browser__arrow" aria-hidden="true"></span>
-      </button>
+      <div class="survey-browser__category-control">
+        <button
+          class="survey-browser__category-filter"
+          type="button"
+          aria-haspopup="listbox"
+          [class.survey-browser__category-filter--open]="isCategoryMenuOpen()"
+          [attr.aria-expanded]="isCategoryMenuOpen()"
+          (click)="toggleCategoryMenu()"
+        >
+          <span>Sort by categories</span>
+          <span class="survey-browser__arrow" aria-hidden="true"></span>
+        </button>
+
+        @if (isCategoryMenuOpen()) {
+          <ul class="survey-browser__category-menu" role="listbox" aria-label="Categories">
+            @for (category of categories; track category) {
+              <li>
+                <button
+                  class="survey-browser__category-option"
+                  type="button"
+                  role="option"
+                  [class.survey-browser__category-option--selected]="
+                    selectedCategory() === category
+                  "
+                  [attr.aria-selected]="selectedCategory() === category"
+                  (click)="selectCategory(category)"
+                >
+                  {{ category }}
+                </button>
+              </li>
+            }
+          </ul>
+        }
+
+        @if (selectedCategory(); as category) {
+          <button
+            class="survey-browser__selected-category"
+            type="button"
+            [attr.aria-label]="'Clear category filter ' + category"
+            (click)="clearCategory()"
+          >
+            {{ category }}
+          </button>
+        }
+      </div>
     </div>
 
     <div class="survey-browser__list">
       @for (survey of filteredSurveys(); track survey.id) {
-        <app-survey-list-card [survey]="survey" />
+        @if (survey.status === 'active') {
+          <a
+            class="survey-link"
+            [routerLink]="['/surveys', survey.id]"
+            [attr.aria-label]="'Open survey ' + survey.title"
+          >
+            <app-survey-list-card [survey]="survey" />
+          </a>
+        } @else {
+          <app-survey-list-card [survey]="survey" />
+        }
       }
     </div>
   </section>

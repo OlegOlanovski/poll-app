@@ -78,20 +78,59 @@
                   <strong aria-label="required">*</strong>
                 </label>
 
-                <select
+                <button
                   id="survey-category"
-                  formControlName="category"
+                  class="create-survey-form__category-toggle"
+                  type="button"
+                  aria-haspopup="listbox"
+                  aria-controls="survey-category-menu"
+                  [class.create-survey-form__category-toggle--open]="isCategoryMenuOpen()"
+                  [attr.aria-expanded]="isCategoryMenuOpen()"
                   [attr.aria-invalid]="
                     surveyForm.controls.category.touched && surveyForm.controls.category.invalid
                   "
-                  required
+                  (click)="toggleCategoryMenu()"
                 >
-                  <option value="">Choose category *</option>
+                  <span>Choose category</span>
+                  <span class="create-survey-form__category-arrow" aria-hidden="true"></span>
+                </button>
 
-                  @for (category of categories; track category) {
-                    <option [value]="category">{{ category }}</option>
-                  }
-                </select>
+                @if (isCategoryMenuOpen()) {
+                  <ul
+                    id="survey-category-menu"
+                    class="create-survey-form__category-menu"
+                    role="listbox"
+                    aria-label="Survey category"
+                  >
+                    @for (category of categories; track category) {
+                      <li>
+                        <button
+                          class="create-survey-form__category-option"
+                          type="button"
+                          role="option"
+                          [class.create-survey-form__category-option--selected]="
+                            surveyForm.controls.category.value === category
+                          "
+                          [attr.aria-selected]="surveyForm.controls.category.value === category"
+                          (click)="selectCategory(category)"
+                        >
+                          {{ category }}
+                        </button>
+                      </li>
+                    }
+                  </ul>
+                }
+
+                @if (surveyForm.controls.category.value; as category) {
+                  <button
+                    class="create-survey-form__category-option create-survey-form__selected-category"
+                    type="button"
+                    [attr.aria-label]="'Clear selected category ' + category"
+                    (click)="clearCategory()"
+                  >
+                    {{ category }}
+                  </button>
+                }
 
                 @if (surveyForm.controls.category.touched && surveyForm.controls.category.invalid) {
                   <p class="create-survey-form__error" role="alert">Select a category.</p>

@@ -1,19 +1,32 @@
-import { Injectable, signal } from '@angular/core';
+import { effect, Injectable, signal } from '@angular/core';
 
+import { INITIAL_SURVEYS } from '../../shared/data/initial-surveys';
 import { CreateSurveyData, CreateSurveyQuestionData } from '../../shared/models/create-survey-data';
 import { Survey, SurveyAnswer, SurveyQuestion, SurveySelections } from '../../shared/models/survey';
 import { createRelativeEndDate } from '../../shared/utils/survey-date';
 
 const DEFAULT_DESCRIPTION = 'No description was provided.';
 const DEFAULT_SURVEY_DURATION_DAYS = 7;
+const SURVEY_STORAGE_KEY = 'poll-app-surveys';
+const LEGACY_CATEGORIES: Readonly<Record<string, string>> = {
+  'Team activities': 'Team Activities',
+  Gaming: 'Gaming & Entertainment',
+  'Healthy Lifestyle': 'Lifestyle & Preferences',
+};
 
 @Injectable({
   providedIn: 'root',
 })
 export class SurveyStore {
-  private readonly surveysState = signal<Survey[]>([]);
+  private readonly surveysState = signal<Survey[]>(loadSurveys());
 
   readonly surveys = this.surveysState.asReadonly();
+
+  constructor() {
+    effect((): void => {
+      saveSurveys(this.surveysState());
+    });
+  }
 
   /** Creates a survey and returns its generated identifier. */
   addSurvey(data: CreateSurveyData): string {
@@ -103,4 +116,51 @@ export class SurveyStore {
 
     return new Date(`${endDate}T23:59:59`).toISOString();
   }
+}
+
+/** Loads valid saved surveys or returns the initial surveys. */
+function loadSurveys(): Survey[] {
+  const storedSurveys = localStorage.getItem(SURVEY_STORAGE_KEY);
+
+  if (!storedSurveys) {
+    return updateSurveyStatuses(INITIAL_SURVEYS);
+  }
+
+  try {
+    const parsedSurveys: unknown = JSON.parse(storedSurveys);
+    return isSurveyArray(parsedSurveys)
+      ? updateSurveyStatuses(parsedSurveys)
+      : updateSurveyStatuses(INITIAL_SURVEYS);
+  } catch {
+    return updateSurveyStatuses(INITIAL_SURVEYS);
+  }
+}
+
+/** Updates active and past states from each real deadline. */
+function updateSurveyStatuses(surveys: Survey[]): Survey[] {
+  return surveys.map((survey: Survey): Survey => ({
+    ...survey,
+    category: LEGACY_CATEGORIES[survey.category] ?? survey.category,
+    status: new Date(survey.endDate).getTime() > Date.now() ? 'active' : 'past',
+  }));
+}
+
+/** Persists surveys in the browser. */
+function saveSurveys(surveys: Survey[]): void {
+  localStorage.setItem(SURVEY_STORAGE_KEY, JSON.stringify(surveys));
+}
+
+/** Checks whether stored data is a survey collection. */
+function isSurveyArray(value: unknown): value is Survey[] {
+  return Array.isArray(value) && value.every(isSurvey);
+}
+
+/** Checks the required top-level properties of stored survey data. */
+function isSurvey(value: unknown): value is Survey {
+  if (typeof value !== 'object' || value === null) {
+    return false;
+  }
+
+  const survey = value as Record<string, unknown>;
+  return typeof survey['id'] === 'string' && Array.isArray(survey['questions']);
 }
