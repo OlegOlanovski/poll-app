@@ -1,0 +1,149 @@
+<header class="survey-detail-header">
+  <nav aria-label="Primary navigation">
+    <ul>
+      <li>
+        <a routerLink="/" aria-label="Poll App home">
+          <img src="/assets/logp-purple-dark.svg" width="119" height="46" alt="Poll App" />
+        </a>
+      </li>
+
+      <li>
+        <a class="survey-detail-header__cta" routerLink="/create-survey"> Create survey </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+@if (survey(); as currentSurvey) {
+  <main class="survey-detail-page">
+    <div class="survey-detail-layout">
+      <article class="survey-detail-card">
+        <p class="survey-detail-card__status">Published</p>
+
+        <div class="survey-detail-card__content">
+          <header class="survey-detail-card__summary">
+            <div class="survey-detail-card__meta">
+              <span>Ends on {{ getDeadlineLabel(currentSurvey.endDate) }}</span>
+              <span>Category: {{ currentSurvey.category }}</span>
+            </div>
+
+            <h1>{{ currentSurvey.title }}</h1>
+
+            <p>{{ currentSurvey.description }}</p>
+          </header>
+
+          <form class="survey-voting-form" (submit)="completeSurvey(); $event.preventDefault()">
+            <section
+              class="survey-voting-form__questions"
+              aria-labelledby="survey-questions-heading"
+            >
+              <h2 id="survey-questions-heading" class="visually-hidden">Survey questions</h2>
+
+              @for (
+                question of currentSurvey.questions;
+                track question.id;
+                let questionIndex = $index
+              ) {
+                <fieldset class="survey-question">
+                  <legend>{{ questionIndex + 1 }}. {{ question.question }}</legend>
+
+                  <p class="survey-question__instruction">
+                    @if (question.allowMultipleAnswers) {
+                      More than one answers are possible.
+                    } @else {
+                      Choose one answer.
+                    }
+                  </p>
+
+                  <div class="survey-question__answers">
+                    @for (answer of question.answers; track answer.id; let answerIndex = $index) {
+                      <label class="survey-answer">
+                        <input
+                          type="checkbox"
+                          [checked]="isAnswerSelected(question.id, answer.id)"
+                          [disabled]="hasSubmitted() || currentSurvey.status === 'past'"
+                          (change)="toggleAnswer(question, answer.id)"
+                        />
+
+                        <strong>{{ getAnswerLabel(answerIndex) }}.</strong>
+                        <span>{{ answer.text }}</span>
+                      </label>
+                    }
+                  </div>
+                </fieldset>
+              }
+            </section>
+
+            @if (currentSurvey.status === 'active') {
+              <button
+                class="survey-voting-form__submit"
+                type="submit"
+                [disabled]="!canComplete() || hasSubmitted()"
+              >
+                {{ hasSubmitted() ? 'Survey completed' : 'Complete survey' }}
+              </button>
+            }
+          </form>
+        </div>
+      </article>
+
+      <aside class="survey-results" aria-labelledby="survey-results-title" aria-live="polite">
+        <h2 id="survey-results-title">Survey results <span>LIVE</span></h2>
+
+        @if (hasResults()) {
+          <div class="survey-results__questions">
+            @for (
+              question of currentSurvey.questions;
+              track question.id;
+              let questionIndex = $index
+            ) {
+              <section class="survey-result">
+                <h3>{{ questionIndex + 1 }}. {{ question.question }}</h3>
+
+                <div class="survey-result__answers">
+                  @for (answer of question.answers; track answer.id; let answerIndex = $index) {
+                    <div class="survey-result__answer">
+                      <strong>{{ getAnswerLabel(answerIndex) }}</strong>
+
+                      <span
+                        class="survey-result__track"
+                        role="progressbar"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        [attr.aria-valuenow]="getVotePercentage(question, answer)"
+                        [attr.aria-label]="answer.text"
+                      >
+                        <span
+                          class="survey-result__fill"
+                          [style.width.%]="getVotePercentage(question, answer)"
+                        ></span>
+                      </span>
+
+                      <span class="survey-result__percentage">
+                        {{ getVotePercentage(question, answer) }}%
+                      </span>
+                    </div>
+                  }
+                </div>
+              </section>
+            }
+          </div>
+        } @else {
+          <div class="survey-results__empty">
+            <p>Results will be shown here after participants complete the survey.</p>
+
+            <strong>There are no answers yet.</strong>
+          </div>
+        }
+      </aside>
+    </div>
+  </main>
+} @else {
+  <main class="survey-not-found">
+    <section aria-labelledby="survey-not-found-title">
+      <h1 id="survey-not-found-title">Survey not found</h1>
+      <p>This survey is unavailable or the page was refreshed.</p>
+      <a routerLink="/">Return to home</a>
+    </section>
+  </main>
+}

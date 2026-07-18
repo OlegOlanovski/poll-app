@@ -7,8 +7,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
+import { SurveyStore } from '../../core/services/survey-store';
 import { CreateSurveyData } from '../../shared/models/create-survey-data';
 
 const FIRST_ANSWER_CHARACTER_CODE = 65;
@@ -38,9 +39,11 @@ type QuestionFormGroup = FormGroup<{
 })
 export class CreateSurvey {
   private readonly formBuilder = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly surveyStore = inject(SurveyStore);
 
   readonly isConfirmationVisible = signal(false);
-  readonly publishedSurvey = signal<CreateSurveyData | null>(null);
+  readonly publishedSurveyId = signal<string | null>(null);
   readonly categories = SURVEY_CATEGORIES;
 
   readonly surveyForm = this.formBuilder.nonNullable.group({
@@ -103,20 +106,30 @@ export class CreateSurvey {
     answers.removeAt(answerIndex);
   }
 
-  /** Validates the form and opens the confirmation overlay. */
+  /** Validates and stores the new survey. */
   publishSurvey(): void {
     if (this.surveyForm.invalid) {
       this.surveyForm.markAllAsTouched();
       return;
     }
 
-    this.publishedSurvey.set(this.surveyForm.getRawValue());
+    const surveyData: CreateSurveyData = this.surveyForm.getRawValue();
+    const surveyId = this.surveyStore.addSurvey(surveyData);
+
+    this.publishedSurveyId.set(surveyId);
     this.isConfirmationVisible.set(true);
   }
 
-  /** Closes the publication confirmation overlay. */
+  /** Closes the confirmation and opens the created survey. */
   closeConfirmation(): void {
+    const surveyId = this.publishedSurveyId();
+
+    if (!surveyId) {
+      return;
+    }
+
     this.isConfirmationVisible.set(false);
+    void this.router.navigate(['/surveys', surveyId]);
   }
 
   /** Creates a question with two required answer fields. */
