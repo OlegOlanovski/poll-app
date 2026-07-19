@@ -1,4 +1,30 @@
-# PollApp
+# Poll App
+
+An Angular learning project for creating surveys, voting, and viewing live results. Survey data
+can be stored in Supabase; when Supabase is not configured, the app automatically uses browser
+`localStorage` for local development.
+
+## Supabase setup
+
+1. Create a Supabase project.
+2. Open the project SQL Editor and run
+   `supabase/migrations/20260719113000_create_poll_schema.sql`.
+3. Run `supabase/seed.sql` in the SQL Editor to add the demo surveys.
+4. Open **Project Settings → Data API** and copy the Project URL and Publishable key.
+5. Add both public values to `src/environments/environment.ts`:
+
+```ts
+export const environment = {
+  supabase: {
+    url: 'https://YOUR_PROJECT.supabase.co',
+    publishableKey: 'YOUR_PUBLISHABLE_KEY',
+  },
+} as const;
+```
+
+Never put the database password or a `service_role`/secret key in Angular code. The browser uses
+only the public publishable key. Row Level Security is enabled by the migration, and database
+changes are performed through the restricted `create_survey` and `submit_survey_vote` functions.
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.9.
 

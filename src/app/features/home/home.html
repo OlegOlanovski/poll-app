@@ -1,6 +1,14 @@
 <app-header />
 
 <main class="home">
+  @if (isLoading()) {
+    <p class="visually-hidden" role="status">Loading surveys…</p>
+  }
+
+  @if (databaseError(); as message) {
+    <p class="visually-hidden" role="alert">Could not load surveys: {{ message }}</p>
+  }
+
   <section class="hero">
     <div class="hero__content">
       <h1>

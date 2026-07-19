@@ -38,6 +38,8 @@ export class CreateSurvey {
 
   readonly isConfirmationVisible = signal(false);
   readonly isCategoryMenuOpen = signal(false);
+  readonly isPublishing = signal(false);
+  readonly publishError = signal<string | null>(null);
   readonly publishedSurveyId = signal<string | null>(null);
   readonly categories = SURVEY_CATEGORIES;
 
@@ -124,14 +126,27 @@ export class CreateSurvey {
   }
 
   /** Validates and stores the new survey. */
-  publishSurvey(): void {
+  async publishSurvey(): Promise<void> {
     if (this.surveyForm.invalid) {
       this.surveyForm.markAllAsTouched();
       return;
     }
 
+    this.isPublishing.set(true);
+    this.publishError.set(null);
+    try {
+      await this.saveSurvey();
+    } catch {
+      this.publishError.set('The survey could not be published. Please try again.');
+    } finally {
+      this.isPublishing.set(false);
+    }
+  }
+
+  /** Saves valid form data and opens the confirmation. */
+  private async saveSurvey(): Promise<void> {
     const surveyData: CreateSurveyData = this.surveyForm.getRawValue();
-    const surveyId = this.surveyStore.addSurvey(surveyData);
+    const surveyId = await this.surveyStore.addSurvey(surveyData);
 
     this.publishedSurveyId.set(surveyId);
     this.isConfirmationVisible.set(true);

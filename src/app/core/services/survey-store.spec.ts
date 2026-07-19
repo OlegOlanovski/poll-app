@@ -31,8 +31,8 @@ describe('SurveyStore', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should create a complete survey', (): void => {
-    const surveyId = service.addSurvey(TEST_SURVEY_DATA);
+  it('should create a complete survey', async (): Promise<void> => {
+    const surveyId = await service.addSurvey(TEST_SURVEY_DATA);
     const survey = service.getSurveyById(surveyId);
 
     expect(survey?.title).toBe('Test survey');
@@ -40,15 +40,15 @@ describe('SurveyStore', () => {
     expect(survey?.questions[0].answers).toHaveLength(2);
   });
 
-  it('should increment only selected answer votes', (): void => {
-    const surveyId = service.addSurvey(TEST_SURVEY_DATA);
+  it('should increment only selected answer votes', async (): Promise<void> => {
+    const surveyId = await service.addSurvey(TEST_SURVEY_DATA);
     const survey = service.getSurveyById(surveyId);
 
     if (!survey) {
       throw new Error('Expected the test survey to exist.');
     }
 
-    service.submitVote(surveyId, createSelection(survey));
+    await service.submitVote(surveyId, createSelection(survey));
 
     const updatedSurvey = service.getSurveyById(surveyId);
     expect(updatedSurvey?.questions[0].answers[0].votes).toBe(1);

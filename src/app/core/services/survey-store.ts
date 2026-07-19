@@ -1,9 +1,10 @@
-import { effect, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 
 import { INITIAL_SURVEYS } from '../../shared/data/initial-surveys';
 import { CreateSurveyData, CreateSurveyQuestionData } from '../../shared/models/create-survey-data';
 import { Survey, SurveyAnswer, SurveyQuestion, SurveySelections } from '../../shared/models/survey';
 import { createRelativeEndDate } from '../../shared/utils/survey-date';
+import { SupabaseSurveyRepository } from './supabase-survey-repository';
 
 const DEFAULT_DESCRIPTION = 'No description was provided.';
 const DEFAULT_SURVEY_DURATION_DAYS = 7;
@@ -18,23 +19,37 @@ const LEGACY_CATEGORIES: Readonly<Record<string, string>> = {
   providedIn: 'root',
 })
 export class SurveyStore {
-  private readonly surveysState = signal<Survey[]>(loadSurveys());
+  private readonly repository = inject(SupabaseSurveyRepository);
+  private readonly surveysState = signal<Survey[]>(
+    this.repository.isConfigured ? [] : loadLocalSurveys(),
+  );
 
   readonly surveys = this.surveysState.asReadonly();
+  readonly isLoading = signal(this.repository.isConfigured);
+  readonly errorMessage = signal<string | null>(null);
 
   constructor() {
+    if (this.repository.isConfigured) {
+      void this.refreshSurveys();
+      return;
+    }
+
     effect((): void => {
-      saveSurveys(this.surveysState());
+      saveLocalSurveys(this.surveysState());
     });
   }
 
   /** Creates a survey and returns its generated identifier. */
-  addSurvey(data: CreateSurveyData): string {
+  async addSurvey(data: CreateSurveyData): Promise<string> {
     const surveyId = crypto.randomUUID();
     const survey = this.createSurvey(data, surveyId);
 
-    this.surveysState.update((surveys: Survey[]): Survey[] => [survey, ...surveys]);
+    if (!this.repository.isConfigured) {
+      this.surveysState.update((surveys: Survey[]): Survey[] => [survey, ...surveys]);
+      return surveyId;
+    }
 
+    await this.runRemoteMutation((): Promise<string> => this.repository.createSurvey(survey));
     return surveyId;
   }
 
@@ -44,12 +59,54 @@ export class SurveyStore {
   }
 
   /** Adds one completed participant vote to a survey. */
-  submitVote(surveyId: string, selections: SurveySelections): void {
+  async submitVote(surveyId: string, selections: SurveySelections): Promise<void> {
+    if (this.repository.isConfigured) {
+      await this.runRemoteMutation((): Promise<void> =>
+        this.repository.submitVote(surveyId, selections),
+      );
+      return;
+    }
+
     this.surveysState.update((surveys: Survey[]): Survey[] =>
       surveys.map((survey: Survey): Survey =>
         survey.id === surveyId ? this.addVotes(survey, selections) : survey,
       ),
     );
+  }
+
+  /** Reloads surveys from the configured remote database. */
+  async refreshSurveys(): Promise<void> {
+    if (!this.repository.isConfigured) {
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
+    try {
+      this.surveysState.set(await this.repository.loadSurveys());
+    } catch (error: unknown) {
+      this.handleRemoteError(error);
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
+
+  /** Runs a database mutation and refreshes the local state. */
+  private async runRemoteMutation(action: () => Promise<unknown>): Promise<void> {
+    this.errorMessage.set(null);
+    try {
+      await action();
+      await this.refreshSurveys();
+    } catch (error: unknown) {
+      this.handleRemoteError(error);
+      throw error;
+    }
+  }
+
+  /** Stores a readable remote error for the interface. */
+  private handleRemoteError(error: unknown): void {
+    const message = error instanceof Error ? error.message : 'The database request failed.';
+    this.errorMessage.set(message);
   }
 
   /** Returns a survey with updated question votes. */
@@ -119,7 +176,7 @@ export class SurveyStore {
 }
 
 /** Loads valid saved surveys or returns the initial surveys. */
-function loadSurveys(): Survey[] {
+function loadLocalSurveys(): Survey[] {
   const storedSurveys = localStorage.getItem(SURVEY_STORAGE_KEY);
 
   if (!storedSurveys) {
@@ -146,7 +203,7 @@ function updateSurveyStatuses(surveys: Survey[]): Survey[] {
 }
 
 /** Persists surveys in the browser. */
-function saveSurveys(surveys: Survey[]): void {
+function saveLocalSurveys(surveys: Survey[]): void {
   localStorage.setItem(SURVEY_STORAGE_KEY, JSON.stringify(surveys));
 }
 

@@ -291,6 +291,15 @@
   opacity: 0.55;
 }
 
+.survey-voting-form__error {
+  margin: 8px 0 0;
+  color: #a64343;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+}
+
 .survey-results {
   width: 315px;
   min-height: 678px;

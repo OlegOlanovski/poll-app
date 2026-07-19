@@ -96,11 +96,11 @@ describe('Home', () => {
     expect(everyDescriptionHasText).toBe(true);
   });
 
-  it('should show a newly created survey in the active list', (): void => {
+  it('should show a newly created survey in the active list', async (): Promise<void> => {
     const initialSurveyCount = component.filteredSurveys().length;
     const surveyStore = TestBed.inject(SurveyStore);
 
-    surveyStore.addSurvey(NEW_SURVEY_DATA);
+    await surveyStore.addSurvey(NEW_SURVEY_DATA);
 
     expect(component.filteredSurveys()).toHaveLength(initialSurveyCount + 1);
   });

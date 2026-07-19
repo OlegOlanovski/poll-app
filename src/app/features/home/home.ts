@@ -22,6 +22,8 @@ export class Home {
 
   readonly allSurveys = this.surveyStore.surveys;
   readonly categories = SURVEY_CATEGORIES;
+  readonly databaseError = this.surveyStore.errorMessage;
+  readonly isLoading = this.surveyStore.isLoading;
   readonly isCategoryMenuOpen = signal(false);
   readonly selectedCategory = signal<SurveyCategory | null>(null);
   readonly selectedStatus = signal<SurveyStatus>('active');

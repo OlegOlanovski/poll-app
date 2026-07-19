@@ -26,6 +26,9 @@ export class SurveyDetail {
 
   readonly selections = signal<SurveySelections>({});
   readonly hasSubmitted = signal(false);
+  readonly isLoading = this.surveyStore.isLoading;
+  readonly isSubmitting = signal(false);
+  readonly submissionError = signal<string | null>(null);
   readonly survey = computed<Survey | undefined>(() =>
     this.surveyStore.getSurveyById(this.surveyId),
   );
@@ -66,12 +69,25 @@ export class SurveyDetail {
   }
 
   /** Completes the survey and updates live results. */
-  completeSurvey(): void {
+  async completeSurvey(): Promise<void> {
     if (!this.canComplete() || this.hasSubmitted()) {
       return;
     }
 
-    this.surveyStore.submitVote(this.surveyId, this.selections());
+    this.isSubmitting.set(true);
+    this.submissionError.set(null);
+    try {
+      await this.saveVote();
+    } catch {
+      this.submissionError.set('Your vote could not be saved. Please try again.');
+    } finally {
+      this.isSubmitting.set(false);
+    }
+  }
+
+  /** Saves selected answers and locks the completed form. */
+  private async saveVote(): Promise<void> {
+    await this.surveyStore.submitVote(this.surveyId, this.selections());
     this.hasSubmitted.set(true);
   }
 

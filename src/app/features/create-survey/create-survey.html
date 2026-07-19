@@ -273,7 +273,20 @@
       </section>
 
       <footer class="create-survey-form__actions">
-        <button type="submit">Publish</button>
+        <button type="submit" [disabled]="isPublishing()" [attr.aria-busy]="isPublishing()">
+          <span>Publish</span>
+          <img
+            class="create-survey-form__publish-icon"
+            src="/assets/icon/check-dark.svg"
+            width="18"
+            height="16"
+            alt=""
+          />
+        </button>
+
+        @if (publishError(); as message) {
+          <p class="create-survey-form__submit-error" role="alert">{{ message }}</p>
+        }
       </footer>
     </form>
   </section>
