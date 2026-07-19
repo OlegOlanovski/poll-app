@@ -67,7 +67,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 0;
+  overflow: hidden;
 
   color: #221227;
   background-color: #ffcfa1;
@@ -79,6 +80,46 @@
   font-weight: 700;
   line-height: 18px;
   white-space: nowrap;
+}
+
+.hero__button-icon {
+  width: 0;
+  height: 24px;
+  flex: 0 0 auto;
+  opacity: 0;
+  transform: scale(0.7);
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 1101px) {
+  .hero__button:hover,
+  .hero__button:focus-visible {
+    width: 172px;
+    gap: 10px;
+    background-color: #ffb770;
+  }
+
+  .hero__button:hover .hero__button-icon,
+  .hero__button:focus-visible .hero__button-icon {
+    width: 24px;
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 1101px) and (prefers-reduced-motion: no-preference) {
+  .hero__button {
+    transition:
+      width 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      gap 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 220ms ease;
+  }
+
+  .hero__button-icon {
+    transition:
+      width 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 180ms ease 60ms,
+      transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
 }
 
 .hero__button:focus-visible {
