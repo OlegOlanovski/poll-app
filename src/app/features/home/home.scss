@@ -592,14 +592,37 @@
 }
 
 .survey-browser__list {
-  width: 1042px;
-  min-height: 413px;
+  width: 1066px;
+  height: 413px;
+  min-height: 0;
+  padding-right: 16px;
 
   display: grid;
   grid-template-columns: repeat(2, 513px);
   grid-template-rows: repeat(3, 127px);
   grid-auto-rows: 127px;
   gap: 16px;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: #ffb770 transparent;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+.survey-browser__list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.survey-browser__list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.survey-browser__list::-webkit-scrollbar-thumb {
+  min-height: 64px;
+  background-color: #ffb770;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3.2px rgb(0 0 0 / 25%);
 }
 
 @media (max-width: 1100px) {
@@ -662,6 +685,8 @@
   }
 
   .survey-browser__list {
+    height: 413px;
+    padding-right: 16px;
     min-height: 0;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: none;
@@ -686,6 +711,10 @@
   .surveys-preview__grid,
   .survey-browser__list {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .survey-browser__list {
+    height: 842px;
   }
 
   .survey-browser__filters {
@@ -829,6 +858,7 @@
   }
 
   .survey-browser__list {
+    height: 962px;
     grid-auto-rows: 147px;
     gap: 16px;
   }

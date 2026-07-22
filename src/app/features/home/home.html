@@ -156,7 +156,7 @@
       </div>
     </div>
 
-    <div class="survey-browser__list">
+    <div class="survey-browser__list" role="region" aria-label="Available surveys" tabindex="0">
       @for (survey of filteredSurveys(); track survey.id) {
         @if (survey.status === 'active') {
           <a
