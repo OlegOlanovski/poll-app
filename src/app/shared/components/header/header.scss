@@ -24,3 +24,9 @@
   width: 119px;
   height: 46px;
 }
+
+@media (max-width: 460px) {
+  .header {
+    padding-top: 48px;
+  }
+}

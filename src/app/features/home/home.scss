@@ -127,6 +127,11 @@
   outline-offset: 3px;
 }
 
+.hero__visual-slot {
+  width: 426px;
+  height: 420px;
+}
+
 .hero__visual {
   position: relative;
   isolation: isolate;
@@ -406,7 +411,7 @@
 }
 .survey-browser {
   width: 1042px;
-  height: 478px;
+  min-height: 478px;
   margin: 40px auto 0;
 
   display: flex;
@@ -588,11 +593,12 @@
 
 .survey-browser__list {
   width: 1042px;
-  height: 413px;
+  min-height: 413px;
 
   display: grid;
   grid-template-columns: repeat(2, 513px);
   grid-template-rows: repeat(3, 127px);
+  grid-auto-rows: 127px;
   gap: 16px;
 }
 
@@ -618,7 +624,212 @@
     line-height: 0.9;
   }
 
-  .hero__visual {
+  .hero__visual-slot {
     justify-self: center;
+  }
+
+  .surveys-preview,
+  .surveys-preview__title,
+  .surveys-preview__urgent,
+  .surveys-preview__subtitle,
+  .surveys-preview__grid,
+  .survey-browser,
+  .survey-browser__filters,
+  .survey-browser__list {
+    width: 100%;
+    height: auto;
+  }
+
+  .surveys-preview {
+    margin-top: 72px;
+    gap: 48px;
+  }
+
+  .surveys-preview__grid {
+    grid-template-columns: repeat(2, minmax(280px, 321px));
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .surveys-preview__grid .survey-link {
+    width: min(100%, 321px);
+    justify-self: center;
+  }
+
+  .survey-browser {
+    min-height: 0;
+    padding-bottom: 64px;
+  }
+
+  .survey-browser__list {
+    min-height: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .home {
+    padding-top: 54px;
+  }
+
+  .surveys-preview__title {
+    font-size: clamp(48px, 15vw, 64px);
+    line-height: 1;
+  }
+
+  .surveys-preview__subtitle {
+    font-size: 26px;
+    line-height: 1.2;
+  }
+
+  .surveys-preview__grid,
+  .survey-browser__list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .survey-browser__filters {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .survey-browser__category-control {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 460px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 24px;
+  }
+
+  .hero__content {
+    display: contents;
+  }
+
+  .hero h1 {
+    min-height: 150px;
+    order: 1;
+    font-size: 62px;
+    line-height: 50px;
+  }
+
+  .hero__visual-slot {
+    height: 250px;
+    width: 100%;
+    order: 2;
+
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero__visual {
+    flex: 0 0 426px;
+    transform: scale(0.595238);
+    transform-origin: top center;
+  }
+
+  .hero__description {
+    min-height: 92px;
+    margin: 0;
+    order: 3;
+    font-size: 18px;
+    line-height: 23px;
+  }
+
+  .hero__button {
+    width: 172px;
+    margin: 30px auto 0;
+    order: 4;
+    justify-self: center;
+    gap: 10px;
+    background-color: #ffb770;
+  }
+
+  .hero__button-icon {
+    width: 24px;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .surveys-preview {
+    margin-top: 80px;
+    gap: 48px;
+  }
+
+  .surveys-preview__title {
+    min-height: 55px;
+    font-size: 54px;
+    line-height: 65px;
+  }
+
+  .surveys-preview__urgent {
+    gap: 16px;
+  }
+
+  .surveys-preview__subtitle {
+    min-height: 30px;
+    padding-left: 0;
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .surveys-preview__grid {
+    width: calc(100% + 32px);
+    margin-inline: -16px;
+    padding-inline: 16px;
+
+    display: flex;
+    justify-content: flex-start;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .surveys-preview__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .surveys-preview__grid .survey-link {
+    width: 250px;
+    flex: 0 0 250px;
+    scroll-snap-align: start;
+  }
+
+  .survey-browser {
+    margin-top: 48px;
+    gap: 24px;
+  }
+
+  .survey-browser__filters {
+    gap: 48px;
+  }
+
+  .survey-browser__status-filters {
+    width: 218px;
+    height: 23px;
+    gap: 16px;
+  }
+
+  .survey-browser__status-button {
+    height: 23px;
+    font-size: 14px;
+    line-height: 19px;
+  }
+
+  .survey-browser__status-button--active {
+    width: 106px;
+  }
+
+  .survey-browser__status-button--past {
+    width: 96px;
+  }
+
+  .survey-browser__list {
+    grid-auto-rows: 147px;
+    gap: 16px;
   }
 }

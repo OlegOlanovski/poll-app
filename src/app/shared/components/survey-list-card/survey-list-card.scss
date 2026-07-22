@@ -1,10 +1,10 @@
 :host {
   display: block;
-  width: 513px;
+  width: min(100%, 513px);
 }
 
 .survey-list-card {
-  width: 513px;
+  width: 100%;
   height: 127px;
   padding: 12px 20px;
 
@@ -18,7 +18,7 @@
 }
 
 .survey-list-card__category {
-  width: 143px;
+  width: min(100%, 143px);
   height: 20px;
   margin: 0;
 
@@ -31,7 +31,7 @@
 }
 
 .survey-list-card__title {
-  width: 473px;
+  width: 100%;
   height: 30px;
   margin: 0;
 
@@ -46,7 +46,7 @@
 }
 
 .survey-list-card__description {
-  width: 440px;
+  width: 100%;
   margin: 0;
 
   overflow: hidden;
@@ -60,7 +60,7 @@
 }
 
 .survey-list-card__footer {
-  width: 473px;
+  width: 100%;
   min-height: 21px;
   margin-top: auto;
 
@@ -83,4 +83,28 @@
   font-weight: 500;
   line-height: 15px;
   white-space: nowrap;
+}
+
+@media (max-width: 460px) {
+  :host,
+  .survey-list-card {
+    width: 100%;
+  }
+
+  .survey-list-card {
+    height: 147px;
+    padding: 12px 16px;
+  }
+
+  .survey-list-card__title {
+    height: auto;
+    max-height: 50px;
+    font-size: 20px;
+    line-height: 25px;
+    white-space: normal;
+  }
+
+  .survey-list-card__description {
+    display: none;
+  }
 }
