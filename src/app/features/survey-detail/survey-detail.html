@@ -18,7 +18,11 @@
   <main class="survey-detail-page">
     <div class="survey-detail-layout">
       <article class="survey-detail-card">
-        <p class="survey-detail-card__status">Published</p>
+        <div class="survey-detail-card__status-row">
+          <p class="survey-detail-card__status">Published</p>
+
+          <a class="survey-detail-card__close" routerLink="/" aria-label="Close survey">×</a>
+        </div>
 
         <div class="survey-detail-card__content">
           <header class="survey-detail-card__summary">
@@ -81,7 +85,13 @@
                 [disabled]="!canComplete() || hasSubmitted() || isSubmitting()"
                 [attr.aria-busy]="isSubmitting()"
               >
-                {{ hasSubmitted() ? 'Survey completed' : 'Complete survey' }}
+                <span class="survey-voting-form__submit-label--desktop">
+                  {{ hasSubmitted() ? 'Survey completed' : 'Complete survey' }}
+                </span>
+                <span class="survey-voting-form__submit-label--mobile">
+                  {{ hasSubmitted() ? 'Completed' : 'Complete' }}
+                </span>
+                <img src="/assets/icon/check-dark.svg" width="18" height="16" alt="" />
               </button>
 
               @if (submissionError(); as message) {
@@ -92,7 +102,24 @@
         </div>
       </article>
 
-      <aside class="survey-results" aria-labelledby="survey-results-title" aria-live="polite">
+      <button
+        class="survey-results-toggle"
+        type="button"
+        aria-controls="survey-results-panel"
+        [attr.aria-expanded]="isResultsOpen()"
+        (click)="toggleResults()"
+      >
+        {{ isResultsOpen() ? 'Close results' : 'Show results' }}
+        <span aria-hidden="true"></span>
+      </button>
+
+      <aside
+        id="survey-results-panel"
+        class="survey-results"
+        [class.survey-results--collapsed]="!isResultsOpen()"
+        aria-labelledby="survey-results-title"
+        aria-live="polite"
+      >
         <h2 id="survey-results-title">Survey results <span>LIVE</span></h2>
 
         @if (hasResults()) {

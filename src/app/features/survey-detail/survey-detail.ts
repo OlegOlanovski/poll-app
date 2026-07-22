@@ -26,6 +26,7 @@ export class SurveyDetail {
 
   readonly selections = signal<SurveySelections>({});
   readonly hasSubmitted = signal(false);
+  readonly isResultsOpen = signal(true);
   readonly isLoading = this.surveyStore.isLoading;
   readonly isSubmitting = signal(false);
   readonly submissionError = signal<string | null>(null);
@@ -66,6 +67,11 @@ export class SurveyDetail {
   /** Returns whether an answer is currently selected. */
   isAnswerSelected(questionId: string, answerId: string): boolean {
     return this.selections()[questionId]?.includes(answerId) ?? false;
+  }
+
+  /** Opens or closes the mobile results accordion. */
+  toggleResults(): void {
+    this.isResultsOpen.update((isOpen: boolean): boolean => !isOpen);
   }
 
   /** Completes the survey and updates live results. */

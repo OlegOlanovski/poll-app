@@ -64,4 +64,10 @@ describe('SurveyDetail', () => {
     expect(component.getVotePercentage(SINGLE_QUESTION, FIRST_ANSWER)).toBe(25);
     expect(component.getVotePercentage(SINGLE_QUESTION, SECOND_ANSWER)).toBe(75);
   });
+
+  it('should toggle the mobile results accordion', (): void => {
+    component.toggleResults();
+
+    expect(component.isResultsOpen()).toBe(false);
+  });
 });
