@@ -2,11 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SurveyListCard } from './survey-list-card';
 
-describe('SurveyListCard', () => {
+describe('SurveyListCard', (): void => {
   let component: SurveyListCard;
   let fixture: ComponentFixture<SurveyListCard>;
 
-  beforeEach(async () => {
+  beforeEach(async (): Promise<void> => {
     await TestBed.configureTestingModule({
       imports: [SurveyListCard],
     }).compileComponents();
@@ -26,10 +26,10 @@ describe('SurveyListCard', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', (): void => {
     expect(component).toBeTruthy();
   });
-  it('should show expired label for a past survey', () => {
+  it('should show expired label for a past survey', (): void => {
     fixture.componentRef.setInput('survey', {
       id: 'past-survey',
       category: 'Team activities',

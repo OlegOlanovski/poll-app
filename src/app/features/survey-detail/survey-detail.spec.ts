@@ -26,7 +26,7 @@ const MULTIPLE_QUESTION: SurveyQuestion = {
   allowMultipleAnswers: true,
 };
 
-describe('SurveyDetail', () => {
+describe('SurveyDetail', (): void => {
   let component: SurveyDetail;
   let fixture: ComponentFixture<SurveyDetail>;
 

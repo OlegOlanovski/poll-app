@@ -3,11 +3,11 @@ import { provideRouter } from '@angular/router';
 
 import { Header } from './header';
 
-describe('Header', () => {
+describe('Header', (): void => {
   let component: Header;
   let fixture: ComponentFixture<Header>;
 
-  beforeEach(async () => {
+  beforeEach(async (): Promise<void> => {
     await TestBed.configureTestingModule({
       imports: [Header],
       providers: [provideRouter([])],
@@ -18,7 +18,7 @@ describe('Header', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', (): void => {
     expect(component).toBeTruthy();
   });
 });

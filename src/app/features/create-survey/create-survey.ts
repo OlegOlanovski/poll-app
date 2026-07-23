@@ -132,6 +132,11 @@ export class CreateSurvey {
       return;
     }
 
+    await this.publishValidSurvey();
+  }
+
+  /** Publishes valid data and exposes any request error. */
+  private async publishValidSurvey(): Promise<void> {
     this.isPublishing.set(true);
     this.publishError.set(null);
     try {
@@ -188,13 +193,16 @@ export class CreateSurvey {
 
     question.controls.question.reset();
     question.controls.allowMultipleAnswers.reset();
-
-    while (answers.length > MIN_ANSWER_COUNT) {
-      answers.removeAt(answers.length - 1);
-    }
-
+    this.removeAdditionalAnswers(answers);
     answers.controls.forEach((answer: AnswerControl): void => {
       answer.reset();
     });
+  }
+
+  /** Keeps the two answer fields required for every question. */
+  private removeAdditionalAnswers(answers: FormArray<AnswerControl>): void {
+    while (answers.length > MIN_ANSWER_COUNT) {
+      answers.removeAt(answers.length - 1);
+    }
   }
 }

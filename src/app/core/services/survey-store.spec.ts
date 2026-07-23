@@ -18,7 +18,7 @@ const TEST_SURVEY_DATA: CreateSurveyData = {
   ],
 };
 
-describe('SurveyStore', () => {
+describe('SurveyStore', (): void => {
   let service: SurveyStore;
 
   beforeEach((): void => {

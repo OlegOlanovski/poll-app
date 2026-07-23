@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 
 import { CreateSurvey } from './create-survey';
 
-describe('CreateSurvey', () => {
+describe('CreateSurvey', (): void => {
   let component: CreateSurvey;
   let fixture: ComponentFixture<CreateSurvey>;
 

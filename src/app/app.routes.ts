@@ -1,20 +1,36 @@
+import type { Type } from '@angular/core';
 import { Routes } from '@angular/router';
-import { SurveyDetail } from './features/survey-detail/survey-detail';
-
-import { CreateSurvey } from './features/create-survey/create-survey';
-import { Home } from './features/home/home';
 
 export const routes: Routes = [
   {
     path: '',
-    component: Home,
+    loadComponent: loadHome,
   },
   {
     path: 'create-survey',
-    component: CreateSurvey,
+    loadComponent: loadCreateSurvey,
   },
   {
     path: 'surveys/:id',
-    component: SurveyDetail,
+    loadComponent: loadSurveyDetail,
   },
 ];
+
+/** Loads the home page only when its route is opened. */
+function loadHome(): Promise<Type<unknown>> {
+  return import('./features/home/home').then(({ Home }): Type<unknown> => Home);
+}
+
+/** Loads the survey creation page only when its route is opened. */
+function loadCreateSurvey(): Promise<Type<unknown>> {
+  return import('./features/create-survey/create-survey').then(
+    ({ CreateSurvey }): Type<unknown> => CreateSurvey,
+  );
+}
+
+/** Loads the survey detail page only when its route is opened. */
+function loadSurveyDetail(): Promise<Type<unknown>> {
+  return import('./features/survey-detail/survey-detail').then(
+    ({ SurveyDetail }): Type<unknown> => SurveyDetail,
+  );
+}

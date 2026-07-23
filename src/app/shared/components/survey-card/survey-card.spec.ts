@@ -2,11 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SurveyCard } from './survey-card';
 
-describe('SurveyCard', () => {
+describe('SurveyCard', (): void => {
   let component: SurveyCard;
   let fixture: ComponentFixture<SurveyCard>;
 
-  beforeEach(async () => {
+  beforeEach(async (): Promise<void> => {
     await TestBed.configureTestingModule({
       imports: [SurveyCard],
     }).compileComponents();
@@ -26,7 +26,7 @@ describe('SurveyCard', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', (): void => {
     expect(component).toBeTruthy();
   });
 });

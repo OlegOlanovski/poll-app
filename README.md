@@ -4,6 +4,16 @@ An Angular learning project for creating surveys, voting, and viewing live resul
 can be stored in Supabase; when Supabase is not configured, the app automatically uses browser
 `localStorage` for local development.
 
+## Extras
+
+- Supabase persistence with Row Level Security and a localStorage fallback
+- live survey results that update after every submitted vote
+- active, past, urgent, and category-filtered survey views
+- responsive desktop, tablet, and mobile layouts
+- accessible keyboard controls and form validation
+- hover animations and a custom survey-list scrollbar
+- 28 unit tests covering components, filtering, voting, and persistence
+
 ## Supabase setup
 
 1. Create a Supabase project.

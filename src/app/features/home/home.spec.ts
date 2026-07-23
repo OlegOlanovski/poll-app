@@ -19,7 +19,7 @@ const NEW_SURVEY_DATA: CreateSurveyData = {
   ],
 };
 
-describe('Home', () => {
+describe('Home', (): void => {
   let component: Home;
   let fixture: ComponentFixture<Home>;
 

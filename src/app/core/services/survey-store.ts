@@ -80,6 +80,11 @@ export class SurveyStore {
       return;
     }
 
+    await this.loadRemoteSurveys();
+  }
+
+  /** Loads remote surveys while maintaining request state. */
+  private async loadRemoteSurveys(): Promise<void> {
     this.isLoading.set(true);
     this.errorMessage.set(null);
     try {
@@ -179,10 +184,11 @@ export class SurveyStore {
 function loadLocalSurveys(): Survey[] {
   const storedSurveys = localStorage.getItem(SURVEY_STORAGE_KEY);
 
-  if (!storedSurveys) {
-    return updateSurveyStatuses(INITIAL_SURVEYS);
-  }
+  return storedSurveys ? parseLocalSurveys(storedSurveys) : updateSurveyStatuses(INITIAL_SURVEYS);
+}
 
+/** Parses saved surveys and falls back to initial data. */
+function parseLocalSurveys(storedSurveys: string): Survey[] {
   try {
     const parsedSurveys: unknown = JSON.parse(storedSurveys);
     return isSurveyArray(parsedSurveys)

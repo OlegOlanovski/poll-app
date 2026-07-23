@@ -80,6 +80,11 @@ export class SurveyDetail {
       return;
     }
 
+    await this.submitSelectedAnswers();
+  }
+
+  /** Submits selected answers and exposes any request error. */
+  private async submitSelectedAnswers(): Promise<void> {
     this.isSubmitting.set(true);
     this.submissionError.set(null);
     try {

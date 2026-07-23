@@ -1,3 +1,9 @@
+<header class="create-survey-brand">
+  <a routerLink="/" aria-label="Poll App home">
+    <img src="/assets/logp-purple-dark.svg" width="119" height="49" alt="Poll App" />
+  </a>
+</header>
+
 <main class="create-survey-page">
   <section class="create-survey" aria-labelledby="create-survey-title">
     <header class="create-survey__header">
@@ -91,7 +97,10 @@
                   "
                   (click)="toggleCategoryMenu()"
                 >
-                  <span>Choose category</span>
+                  <span>
+                    Choose category
+                    <strong class="required-marker" aria-hidden="true">*</strong>
+                  </span>
                   <span class="create-survey-form__category-arrow" aria-hidden="true"></span>
                 </button>
 
@@ -170,7 +179,10 @@
           ) {
             <fieldset class="question-form" [formGroupName]="questionIndex">
               <legend class="question-form__header">
-                <span>{{ questionIndex + 1 }}. Question</span>
+                <span>
+                  {{ questionIndex + 1 }}. Question
+                  <strong class="required-marker" aria-hidden="true">*</strong>
+                </span>
 
                 <button
                   type="button"
@@ -194,7 +206,7 @@
                 class="question-form__question-input"
                 type="text"
                 formControlName="question"
-                placeholder="Enter your question"
+                placeholder="Which date would work best for you?"
                 [attr.aria-invalid]="
                   questionGroup.controls.question.touched && questionGroup.controls.question.invalid
                 "
@@ -208,7 +220,10 @@
               }
 
               <div class="question-form__answers-header">
-                <h3>Answers</h3>
+                <h3>
+                  Answers
+                  <strong class="required-marker" aria-label="required">*</strong>
+                </h3>
 
                 <label class="question-form__multiple">
                   <input type="checkbox" formControlName="allowMultipleAnswers" />
