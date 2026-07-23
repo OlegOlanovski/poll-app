@@ -156,20 +156,31 @@
       </div>
     </div>
 
-    <div class="survey-browser__list" role="region" aria-label="Available surveys" tabindex="0">
-      @for (survey of filteredSurveys(); track survey.id) {
-        @if (survey.status === 'active') {
-          <a
-            class="survey-link"
-            [routerLink]="['/surveys', survey.id]"
-            [attr.aria-label]="'Open survey ' + survey.title"
-          >
+    <div
+      class="survey-browser__list-shell"
+      [style.--survey-scroll-thumb-offset]="surveyScrollThumbOffset()"
+    >
+      <div
+        class="survey-browser__list"
+        role="region"
+        aria-label="Available surveys"
+        tabindex="0"
+        (scroll)="updateSurveyScroll($event)"
+      >
+        @for (survey of filteredSurveys(); track survey.id) {
+          @if (survey.status === 'active') {
+            <a
+              class="survey-link"
+              [routerLink]="['/surveys', survey.id]"
+              [attr.aria-label]="'Open survey ' + survey.title"
+            >
+              <app-survey-list-card [survey]="survey" />
+            </a>
+          } @else {
             <app-survey-list-card [survey]="survey" />
-          </a>
-        } @else {
-          <app-survey-list-card [survey]="survey" />
+          }
         }
-      }
+      </div>
     </div>
   </section>
 </main>

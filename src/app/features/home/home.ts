@@ -10,6 +10,7 @@ import { SurveyPreview, SurveyStatus } from '../../shared/models/survey-preview'
 import { sortSurveysByEndDate } from '../../shared/utils/survey-date';
 
 const URGENT_SURVEY_COUNT = 3;
+const SURVEY_SCROLL_THUMB_HEIGHT = 64;
 
 @Component({
   selector: 'app-home',
@@ -27,6 +28,7 @@ export class Home {
   readonly isCategoryMenuOpen = signal(false);
   readonly selectedCategory = signal<SurveyCategory | null>(null);
   readonly selectedStatus = signal<SurveyStatus>('active');
+  readonly surveyScrollThumbOffset = signal('0px');
   readonly urgentSurveys = computed<SurveyPreview[]>(() => {
     const activeSurveys = this.allSurveys().filter(
       (survey: SurveyPreview): boolean => survey.status === 'active',
@@ -64,5 +66,15 @@ export class Home {
   /** Removes the selected category filter. */
   clearCategory(): void {
     this.selectedCategory.set(null);
+  }
+
+  /** Moves the custom desktop scrollbar thumb with the survey list. */
+  updateSurveyScroll(event: Event): void {
+    const list = event.currentTarget as HTMLElement;
+    const maxScrollTop = list.scrollHeight - list.clientHeight;
+    const maxThumbOffset = list.clientHeight - SURVEY_SCROLL_THUMB_HEIGHT;
+    const scrollProgress = maxScrollTop === 0 ? 0 : list.scrollTop / maxScrollTop;
+
+    this.surveyScrollThumbOffset.set(`${Math.round(maxThumbOffset * scrollProgress)}px`);
   }
 }

@@ -115,4 +115,16 @@ describe('Home', () => {
 
     expect(pastSurveyLinks).toHaveLength(0);
   });
+
+  it('should move the custom scroll thumb with the survey list', (): void => {
+    const list = {
+      clientHeight: 413,
+      scrollHeight: 826,
+      scrollTop: 206.5,
+    } as HTMLElement;
+
+    component.updateSurveyScroll({ currentTarget: list } as unknown as Event);
+
+    expect(component.surveyScrollThumbOffset()).toBe('175px');
+  });
 });
