@@ -74,6 +74,7 @@ export class Home {
   /** Removes the selected category filter. */
   clearCategory(): void {
     this.selectedCategory.set(null);
+    this.isCategoryMenuOpen.set(false);
   }
 
   /**

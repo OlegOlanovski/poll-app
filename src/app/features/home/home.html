@@ -124,6 +124,20 @@
 
         @if (isCategoryMenuOpen()) {
           <ul class="survey-browser__category-menu" role="listbox" aria-label="Categories">
+            <li>
+              <button
+                class="survey-browser__category-option survey-browser__category-option--all"
+                type="button"
+                role="option"
+                [class.survey-browser__category-option--selected]="selectedCategory() === null"
+                [attr.aria-selected]="selectedCategory() === null"
+                (click)="clearCategory()"
+              >
+                <span class="survey-browser__all-categories-icon" aria-hidden="true"></span>
+                <span>All categories</span>
+              </button>
+            </li>
+
             @for (category of categories; track category) {
               <li>
                 <button

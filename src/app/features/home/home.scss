@@ -529,7 +529,7 @@
   right: 0;
 
   width: 206px;
-  height: 192px;
+  height: auto;
   margin: 0;
   padding: 8px 4px;
 
@@ -574,6 +574,45 @@
 
 .survey-browser__category-option--selected {
   color: #ffb770;
+}
+
+.survey-browser__category-option--all {
+  gap: 8px;
+}
+
+.survey-browser__all-categories-icon {
+  width: 14px;
+  height: 2px;
+
+  position: relative;
+
+  display: block;
+  flex: 0 0 14px;
+
+  color: inherit;
+  background-color: currentColor;
+  border-radius: 2px;
+}
+
+.survey-browser__all-categories-icon::before,
+.survey-browser__all-categories-icon::after {
+  width: 14px;
+  height: 2px;
+
+  position: absolute;
+  left: 0;
+
+  content: '';
+  background-color: currentColor;
+  border-radius: 2px;
+}
+
+.survey-browser__all-categories-icon::before {
+  top: -4px;
+}
+
+.survey-browser__all-categories-icon::after {
+  top: 4px;
 }
 
 .survey-browser__selected-category {
