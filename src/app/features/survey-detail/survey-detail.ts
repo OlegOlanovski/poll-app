@@ -50,7 +50,12 @@ export class SurveyDetail {
     );
   });
 
-  /** Selects one answer or toggles a multiple answer. */
+  /**
+   * Selects one answer or toggles a multiple answer.
+   *
+   * @param question - Question that owns the selected answer.
+   * @param answerId - Identifier of the answer selected by the user.
+   */
   toggleAnswer(question: SurveyQuestion, answerId: string): void {
     if (this.hasSubmitted()) {
       return;
@@ -64,7 +69,13 @@ export class SurveyDetail {
     }));
   }
 
-  /** Returns whether an answer is currently selected. */
+  /**
+   * Returns whether an answer is currently selected.
+   *
+   * @param questionId - Identifier of the answer's question.
+   * @param answerId - Identifier of the answer to check.
+   * @returns Whether the answer is currently selected.
+   */
   isAnswerSelected(questionId: string, answerId: string): boolean {
     return this.selections()[questionId]?.includes(answerId) ?? false;
   }
@@ -74,7 +85,11 @@ export class SurveyDetail {
     this.isResultsOpen.update((isOpen: boolean): boolean => !isOpen);
   }
 
-  /** Completes the survey and updates live results. */
+  /**
+   * Completes the survey and updates live results.
+   *
+   * @returns A promise that resolves after valid selections are submitted.
+   */
   async completeSurvey(): Promise<void> {
     if (!this.canComplete() || this.hasSubmitted()) {
       return;
@@ -83,7 +98,11 @@ export class SurveyDetail {
     await this.submitSelectedAnswers();
   }
 
-  /** Submits selected answers and exposes any request error. */
+  /**
+   * Submits selected answers and exposes any request error.
+   *
+   * @returns A promise that resolves after the submission request finishes.
+   */
   private async submitSelectedAnswers(): Promise<void> {
     this.isSubmitting.set(true);
     this.submissionError.set(null);
@@ -96,23 +115,43 @@ export class SurveyDetail {
     }
   }
 
-  /** Saves selected answers and locks the completed form. */
+  /**
+   * Saves selected answers and locks the completed form.
+   *
+   * @returns A promise that resolves after the vote is stored.
+   */
   private async saveVote(): Promise<void> {
     await this.surveyStore.submitVote(this.surveyId, this.selections());
     this.hasSubmitted.set(true);
   }
 
-  /** Returns an alphabetical answer label. */
+  /**
+   * Returns an alphabetical answer label.
+   *
+   * @param answerIndex - Zero-based index of the answer.
+   * @returns The corresponding alphabetical answer label.
+   */
   getAnswerLabel(answerIndex: number): string {
     return String.fromCharCode(FIRST_ANSWER_CHARACTER_CODE + answerIndex);
   }
 
-  /** Formats a survey deadline for display. */
+  /**
+   * Formats a survey deadline for display.
+   *
+   * @param endDate - Survey deadline in a date-compatible string format.
+   * @returns The deadline formatted for the German locale.
+   */
   getDeadlineLabel(endDate: string): string {
     return DATE_FORMATTER.format(new Date(endDate));
   }
 
-  /** Calculates one answer percentage within its question. */
+  /**
+   * Calculates one answer percentage within its question.
+   *
+   * @param question - Question containing all current vote totals.
+   * @param answer - Answer whose percentage should be calculated.
+   * @returns The rounded percentage of votes received by the answer.
+   */
   getVotePercentage(question: SurveyQuestion, answer: SurveyAnswer): number {
     const totalVotes = question.answers.reduce(
       (total: number, currentAnswer: SurveyAnswer): number => total + currentAnswer.votes,
@@ -122,14 +161,26 @@ export class SurveyDetail {
     return totalVotes === 0 ? 0 : Math.round((answer.votes / totalVotes) * PERCENTAGE_MULTIPLIER);
   }
 
-  /** Toggles an identifier inside a multiple selection. */
+  /**
+   * Toggles an identifier inside a multiple selection.
+   *
+   * @param selectedIds - Currently selected answer identifiers.
+   * @param answerId - Identifier that should be added or removed.
+   * @returns A new array containing the updated selection.
+   */
   private toggleSelection(selectedIds: string[], answerId: string): string[] {
     return selectedIds.includes(answerId)
       ? selectedIds.filter((selectedId: string): boolean => selectedId !== answerId)
       : [...selectedIds, answerId];
   }
 
-  /** Returns the next valid selection for a question. */
+  /**
+   * Returns the next valid selection for a question.
+   *
+   * @param question - Question that defines the selection mode.
+   * @param answerId - Identifier selected by the user.
+   * @returns The next valid answer selection for the question.
+   */
   private getNextSelection(question: SurveyQuestion, answerId: string): string[] {
     const currentIds = this.selections()[question.id] ?? [];
 

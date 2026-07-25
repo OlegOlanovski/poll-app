@@ -16,19 +16,31 @@ export const routes: Routes = [
   },
 ];
 
-/** Loads the home page only when its route is opened. */
+/**
+ * Loads the home page only when its route is opened.
+ *
+ * @returns A promise that resolves to the home page component.
+ */
 function loadHome(): Promise<Type<unknown>> {
   return import('./features/home/home').then(({ Home }): Type<unknown> => Home);
 }
 
-/** Loads the survey creation page only when its route is opened. */
+/**
+ * Loads the survey creation page only when its route is opened.
+ *
+ * @returns A promise that resolves to the survey creation component.
+ */
 function loadCreateSurvey(): Promise<Type<unknown>> {
   return import('./features/create-survey/create-survey').then(
     ({ CreateSurvey }): Type<unknown> => CreateSurvey,
   );
 }
 
-/** Loads the survey detail page only when its route is opened. */
+/**
+ * Loads the survey detail page only when its route is opened.
+ *
+ * @returns A promise that resolves to the survey detail component.
+ */
 function loadSurveyDetail(): Promise<Type<unknown>> {
   return import('./features/survey-detail/survey-detail').then(
     ({ SurveyDetail }): Type<unknown> => SurveyDetail,

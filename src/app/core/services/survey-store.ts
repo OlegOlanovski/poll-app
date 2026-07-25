@@ -28,6 +28,7 @@ export class SurveyStore {
   readonly isLoading = signal(this.repository.isConfigured);
   readonly errorMessage = signal<string | null>(null);
 
+  /** Initializes remote loading or local browser persistence. */
   constructor() {
     if (this.repository.isConfigured) {
       void this.refreshSurveys();
@@ -39,7 +40,12 @@ export class SurveyStore {
     });
   }
 
-  /** Creates a survey and returns its generated identifier. */
+  /**
+   * Creates a survey and returns its generated identifier.
+   *
+   * @param data - Validated data from the survey creation form.
+   * @returns A promise that resolves to the generated survey identifier.
+   */
   async addSurvey(data: CreateSurveyData): Promise<string> {
     const surveyId = crypto.randomUUID();
     const survey = this.createSurvey(data, surveyId);
@@ -53,12 +59,23 @@ export class SurveyStore {
     return surveyId;
   }
 
-  /** Finds one survey by its identifier. */
+  /**
+   * Finds one survey by its identifier.
+   *
+   * @param surveyId - Identifier of the requested survey.
+   * @returns The matching survey, or undefined when it does not exist.
+   */
   getSurveyById(surveyId: string): Survey | undefined {
     return this.surveys().find((survey: Survey): boolean => survey.id === surveyId);
   }
 
-  /** Adds one completed participant vote to a survey. */
+  /**
+   * Adds one completed participant vote to a survey.
+   *
+   * @param surveyId - Identifier of the survey receiving the vote.
+   * @param selections - Selected answer identifiers grouped by question.
+   * @returns A promise that resolves after the vote is stored.
+   */
   async submitVote(surveyId: string, selections: SurveySelections): Promise<void> {
     if (this.repository.isConfigured) {
       await this.runRemoteMutation((): Promise<void> =>
@@ -74,7 +91,11 @@ export class SurveyStore {
     );
   }
 
-  /** Reloads surveys from the configured remote database. */
+  /**
+   * Reloads surveys from the configured remote database.
+   *
+   * @returns A promise that resolves after the surveys are refreshed.
+   */
   async refreshSurveys(): Promise<void> {
     if (!this.repository.isConfigured) {
       return;
@@ -83,7 +104,11 @@ export class SurveyStore {
     await this.loadRemoteSurveys();
   }
 
-  /** Loads remote surveys while maintaining request state. */
+  /**
+   * Loads remote surveys while maintaining request state.
+   *
+   * @returns A promise that resolves after the loading state is updated.
+   */
   private async loadRemoteSurveys(): Promise<void> {
     this.isLoading.set(true);
     this.errorMessage.set(null);
@@ -96,7 +121,13 @@ export class SurveyStore {
     }
   }
 
-  /** Runs a database mutation and refreshes the local state. */
+  /**
+   * Runs a database mutation and refreshes the local state.
+   *
+   * @param action - Asynchronous database mutation to execute.
+   * @returns A promise that resolves after the mutation and refresh finish.
+   * @throws The original database error when the mutation fails.
+   */
   private async runRemoteMutation(action: () => Promise<unknown>): Promise<void> {
     this.errorMessage.set(null);
     try {
@@ -108,13 +139,23 @@ export class SurveyStore {
     }
   }
 
-  /** Stores a readable remote error for the interface. */
+  /**
+   * Stores a readable remote error for the interface.
+   *
+   * @param error - Unknown error received from a remote request.
+   */
   private handleRemoteError(error: unknown): void {
     const message = error instanceof Error ? error.message : 'The database request failed.';
     this.errorMessage.set(message);
   }
 
-  /** Returns a survey with updated question votes. */
+  /**
+   * Returns a survey with updated question votes.
+   *
+   * @param survey - Survey that receives the completed selections.
+   * @param selections - Selected answer identifiers grouped by question.
+   * @returns A new survey containing the incremented vote totals.
+   */
   private addVotes(survey: Survey, selections: SurveySelections): Survey {
     return {
       ...survey,
@@ -124,7 +165,13 @@ export class SurveyStore {
     };
   }
 
-  /** Returns a question with incremented selected answers. */
+  /**
+   * Returns a question with incremented selected answers.
+   *
+   * @param question - Question whose answers should be updated.
+   * @param selectedAnswerIds - Identifiers of the selected answers.
+   * @returns A new question containing the incremented vote totals.
+   */
   private addQuestionVotes(question: SurveyQuestion, selectedAnswerIds: string[]): SurveyQuestion {
     return {
       ...question,
@@ -135,7 +182,13 @@ export class SurveyStore {
     };
   }
 
-  /** Converts form data into a complete survey. */
+  /**
+   * Converts form data into a complete survey.
+   *
+   * @param data - Validated data from the survey creation form.
+   * @param surveyId - Generated identifier assigned to the survey.
+   * @returns A complete survey ready for persistence.
+   */
   private createSurvey(data: CreateSurveyData, surveyId: string): Survey {
     return {
       id: surveyId,
@@ -151,7 +204,12 @@ export class SurveyStore {
     };
   }
 
-  /** Converts one form question into a survey question. */
+  /**
+   * Converts one form question into a survey question.
+   *
+   * @param data - Validated question data from the creation form.
+   * @returns A complete survey question with generated identifiers.
+   */
   private createQuestion(data: CreateSurveyQuestionData): SurveyQuestion {
     return {
       id: crypto.randomUUID(),
@@ -161,7 +219,12 @@ export class SurveyStore {
     };
   }
 
-  /** Creates one answer with an initial vote count. */
+  /**
+   * Creates one answer with an initial vote count.
+   *
+   * @param answer - Answer text entered in the creation form.
+   * @returns A survey answer with a generated identifier and zero votes.
+   */
   private createAnswer(answer: string): SurveyAnswer {
     return {
       id: crypto.randomUUID(),
@@ -170,7 +233,12 @@ export class SurveyStore {
     };
   }
 
-  /** Uses the selected deadline or creates a default deadline. */
+  /**
+   * Uses the selected deadline or creates a default deadline.
+   *
+   * @param endDate - Optional date selected in the creation form.
+   * @returns The selected or default deadline in ISO 8601 format.
+   */
   private resolveEndDate(endDate: string): string {
     if (!endDate) {
       return createRelativeEndDate(DEFAULT_SURVEY_DURATION_DAYS);
@@ -180,14 +248,23 @@ export class SurveyStore {
   }
 }
 
-/** Loads valid saved surveys or returns the initial surveys. */
+/**
+ * Loads valid saved surveys or returns the initial surveys.
+ *
+ * @returns Saved local surveys or the predefined initial surveys.
+ */
 function loadLocalSurveys(): Survey[] {
   const storedSurveys = localStorage.getItem(SURVEY_STORAGE_KEY);
 
   return storedSurveys ? parseLocalSurveys(storedSurveys) : updateSurveyStatuses(INITIAL_SURVEYS);
 }
 
-/** Parses saved surveys and falls back to initial data. */
+/**
+ * Parses saved surveys and falls back to initial data.
+ *
+ * @param storedSurveys - Serialized survey data from local storage.
+ * @returns Parsed surveys or the predefined initial surveys.
+ */
 function parseLocalSurveys(storedSurveys: string): Survey[] {
   try {
     const parsedSurveys: unknown = JSON.parse(storedSurveys);
@@ -199,7 +276,12 @@ function parseLocalSurveys(storedSurveys: string): Survey[] {
   }
 }
 
-/** Updates active and past states from each real deadline. */
+/**
+ * Updates active and past states from each real deadline.
+ *
+ * @param surveys - Surveys whose status and legacy categories need updating.
+ * @returns New survey objects with normalized categories and current statuses.
+ */
 function updateSurveyStatuses(surveys: Survey[]): Survey[] {
   return surveys.map((survey: Survey): Survey => ({
     ...survey,
@@ -208,17 +290,31 @@ function updateSurveyStatuses(surveys: Survey[]): Survey[] {
   }));
 }
 
-/** Persists surveys in the browser. */
+/**
+ * Persists surveys in the browser.
+ *
+ * @param surveys - Surveys to serialize into local storage.
+ */
 function saveLocalSurveys(surveys: Survey[]): void {
   localStorage.setItem(SURVEY_STORAGE_KEY, JSON.stringify(surveys));
 }
 
-/** Checks whether stored data is a survey collection. */
+/**
+ * Checks whether stored data is a survey collection.
+ *
+ * @param value - Unknown stored value to validate.
+ * @returns Whether the value is a valid survey array.
+ */
 function isSurveyArray(value: unknown): value is Survey[] {
   return Array.isArray(value) && value.every(isSurvey);
 }
 
-/** Checks the required top-level properties of stored survey data. */
+/**
+ * Checks the required top-level properties of stored survey data.
+ *
+ * @param value - Unknown item to validate as a survey.
+ * @returns Whether the value contains the required survey properties.
+ */
 function isSurvey(value: unknown): value is Survey {
   if (typeof value !== 'object' || value === null) {
     return false;

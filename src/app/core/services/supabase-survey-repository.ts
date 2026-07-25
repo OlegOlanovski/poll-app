@@ -53,7 +53,12 @@ export class SupabaseSurveyRepository {
 
   readonly isConfigured = this.supabase.isConfigured;
 
-  /** Loads all surveys with their nested questions and answers. */
+  /**
+   * Loads all surveys with their nested questions and answers.
+   *
+   * @returns A promise that resolves to the surveys stored in Supabase.
+   * @throws The Supabase error when the database request fails.
+   */
   async loadSurveys(): Promise<Survey[]> {
     const response = await this.supabase.database
       .from('surveys')
@@ -68,7 +73,13 @@ export class SupabaseSurveyRepository {
     return rows.map(mapSurvey);
   }
 
-  /** Creates a complete survey in one database transaction. */
+  /**
+   * Creates a complete survey in one database transaction.
+   *
+   * @param survey - Complete survey data sent to Supabase.
+   * @returns A promise that resolves to the created survey identifier.
+   * @throws The Supabase error when the database request fails.
+   */
   async createSurvey(survey: Survey): Promise<string> {
     const response = await this.supabase.database.rpc('create_survey', {
       payload: survey as unknown as Json,
@@ -81,7 +92,14 @@ export class SupabaseSurveyRepository {
     return response.data;
   }
 
-  /** Submits selected answers using one atomic database function. */
+  /**
+   * Submits selected answers using one atomic database function.
+   *
+   * @param surveyId - Identifier of the survey receiving the vote.
+   * @param selections - Selected answer identifiers grouped by question.
+   * @returns A promise that resolves after the vote is stored.
+   * @throws The Supabase error when the database request fails.
+   */
   async submitVote(surveyId: string, selections: SurveySelections): Promise<void> {
     const selectedAnswerIds = Object.values(selections).flat();
     const response = await this.supabase.database.rpc('submit_survey_vote', {
@@ -95,7 +113,12 @@ export class SupabaseSurveyRepository {
   }
 }
 
-/** Converts one database survey into the application model. */
+/**
+ * Converts one database survey into the application model.
+ *
+ * @param row - Survey row returned by Supabase.
+ * @returns The mapped application survey.
+ */
 function mapSurvey(row: SupabaseSurveyRow): Survey {
   return {
     id: row.id,
@@ -109,7 +132,12 @@ function mapSurvey(row: SupabaseSurveyRow): Survey {
   };
 }
 
-/** Converts one nested database question. */
+/**
+ * Converts one nested database question.
+ *
+ * @param row - Nested question row returned by Supabase.
+ * @returns The mapped survey question.
+ */
 function mapQuestion(row: SupabaseQuestionRow): SurveyQuestion {
   return {
     id: row.id,
@@ -119,12 +147,23 @@ function mapQuestion(row: SupabaseQuestionRow): SurveyQuestion {
   };
 }
 
-/** Converts one nested database answer. */
+/**
+ * Converts one nested database answer.
+ *
+ * @param row - Nested answer row returned by Supabase.
+ * @returns The mapped survey answer.
+ */
 function mapAnswer(row: SupabaseAnswerRow): SurveyAnswer {
   return { id: row.id, text: row.text, votes: row.votes };
 }
 
-/** Sorts nested rows by their saved position. */
+/**
+ * Sorts nested rows by their saved position.
+ *
+ * @param first - First positioned row.
+ * @param second - Second positioned row.
+ * @returns A negative, zero, or positive value for array sorting.
+ */
 function byPosition(first: { position: number }, second: { position: number }): number {
   return first.position - second.position;
 }

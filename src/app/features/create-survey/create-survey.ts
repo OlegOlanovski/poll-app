@@ -51,22 +51,40 @@ export class CreateSurvey {
     questions: new FormArray<QuestionFormGroup>([this.createQuestionGroup()]),
   });
 
-  /** Returns all question form groups. */
+  /**
+   * Returns all question form groups.
+   *
+   * @returns The form array containing every survey question.
+   */
   get questions(): FormArray<QuestionFormGroup> {
     return this.surveyForm.controls.questions;
   }
 
-  /** Returns the answers belonging to one question. */
+  /**
+   * Returns the answers belonging to one question.
+   *
+   * @param questionIndex - Zero-based index of the requested question.
+   * @returns The answer controls belonging to the selected question.
+   */
   getAnswers(questionIndex: number): FormArray<AnswerControl> {
     return this.questions.at(questionIndex).controls.answers;
   }
 
-  /** Returns an alphabetical label for an answer. */
+  /**
+   * Returns an alphabetical label for an answer.
+   *
+   * @param answerIndex - Zero-based index of the answer.
+   * @returns The corresponding alphabetical answer label.
+   */
   getAnswerLabel(answerIndex: number): string {
     return String.fromCharCode(FIRST_ANSWER_CHARACTER_CODE + answerIndex);
   }
 
-  /** Clears one of the survey information fields. */
+  /**
+   * Clears one of the survey information fields.
+   *
+   * @param field - Name of the field that should be reset.
+   */
   clearSurveyField(field: ClearableSurveyField): void {
     this.surveyForm.controls[field].reset();
   }
@@ -80,7 +98,11 @@ export class CreateSurvey {
     this.isCategoryMenuOpen.update((isOpen: boolean): boolean => !isOpen);
   }
 
-  /** Stores the selected required category. */
+  /**
+   * Stores the selected required category.
+   *
+   * @param category - Category selected by the user.
+   */
   selectCategory(category: SurveyCategory): void {
     this.surveyForm.controls.category.setValue(category);
     this.surveyForm.controls.category.markAsTouched();
@@ -98,7 +120,11 @@ export class CreateSurvey {
     this.questions.push(this.createQuestionGroup());
   }
 
-  /** Clears the first question or removes any following question. */
+  /**
+   * Clears the first question or removes any following question.
+   *
+   * @param questionIndex - Zero-based index of the question to clear or delete.
+   */
   deleteQuestion(questionIndex: number): void {
     if (questionIndex === 0) {
       this.resetQuestion(questionIndex);
@@ -108,12 +134,21 @@ export class CreateSurvey {
     this.questions.removeAt(questionIndex);
   }
 
-  /** Adds an answer to a selected question. */
+  /**
+   * Adds an answer to a selected question.
+   *
+   * @param questionIndex - Zero-based index of the question receiving the answer.
+   */
   addAnswer(questionIndex: number): void {
     this.getAnswers(questionIndex).push(this.createAnswerControl());
   }
 
-  /** Clears a required answer or removes an additional answer. */
+  /**
+   * Clears a required answer or removes an additional answer.
+   *
+   * @param questionIndex - Zero-based index of the answer's question.
+   * @param answerIndex - Zero-based index of the answer to clear or delete.
+   */
   deleteAnswer(questionIndex: number, answerIndex: number): void {
     const answers = this.getAnswers(questionIndex);
 
@@ -125,7 +160,11 @@ export class CreateSurvey {
     answers.removeAt(answerIndex);
   }
 
-  /** Validates and stores the new survey. */
+  /**
+   * Validates and stores the new survey.
+   *
+   * @returns A promise that resolves after validation and publication finish.
+   */
   async publishSurvey(): Promise<void> {
     if (this.surveyForm.invalid) {
       this.surveyForm.markAllAsTouched();
@@ -135,7 +174,11 @@ export class CreateSurvey {
     await this.publishValidSurvey();
   }
 
-  /** Publishes valid data and exposes any request error. */
+  /**
+   * Publishes valid data and exposes any request error.
+   *
+   * @returns A promise that resolves after the publication request finishes.
+   */
   private async publishValidSurvey(): Promise<void> {
     this.isPublishing.set(true);
     this.publishError.set(null);
@@ -148,7 +191,11 @@ export class CreateSurvey {
     }
   }
 
-  /** Saves valid form data and opens the confirmation. */
+  /**
+   * Saves valid form data and opens the confirmation.
+   *
+   * @returns A promise that resolves after the survey is stored.
+   */
   private async saveSurvey(): Promise<void> {
     const surveyData: CreateSurveyData = this.surveyForm.getRawValue();
     const surveyId = await this.surveyStore.addSurvey(surveyData);
@@ -169,7 +216,11 @@ export class CreateSurvey {
     void this.router.navigate(['/surveys', surveyId]);
   }
 
-  /** Creates a question with two required answer fields. */
+  /**
+   * Creates a question with two required answer fields.
+   *
+   * @returns A new strongly typed question form group.
+   */
   private createQuestionGroup(): QuestionFormGroup {
     return this.formBuilder.nonNullable.group({
       question: ['', Validators.required],
@@ -181,12 +232,20 @@ export class CreateSurvey {
     });
   }
 
-  /** Creates one required answer control. */
+  /**
+   * Creates one required answer control.
+   *
+   * @returns A new non-nullable answer control with required validation.
+   */
   private createAnswerControl(): AnswerControl {
     return this.formBuilder.nonNullable.control('', Validators.required);
   }
 
-  /** Restores one question to its initial state. */
+  /**
+   * Restores one question to its initial state.
+   *
+   * @param questionIndex - Zero-based index of the question to reset.
+   */
   private resetQuestion(questionIndex: number): void {
     const question = this.questions.at(questionIndex);
     const answers = question.controls.answers;
@@ -199,7 +258,11 @@ export class CreateSurvey {
     });
   }
 
-  /** Keeps the two answer fields required for every question. */
+  /**
+   * Keeps the two answer fields required for every question.
+   *
+   * @param answers - Answer controls that should be reduced to the minimum count.
+   */
   private removeAdditionalAnswers(answers: FormArray<AnswerControl>): void {
     while (answers.length > MIN_ANSWER_COUNT) {
       answers.removeAt(answers.length - 1);

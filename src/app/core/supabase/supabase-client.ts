@@ -12,7 +12,12 @@ export class SupabaseClientService {
 
   private readonly client = this.createConfiguredClient();
 
-  /** Returns the configured browser client. */
+  /**
+   * Returns the configured browser client.
+   *
+   * @returns The configured Supabase client.
+   * @throws An error when the required environment values are missing.
+   */
   get database(): SupabaseClient<Database> {
     if (!this.client) {
       throw new Error('Supabase environment values are missing.');
@@ -21,7 +26,11 @@ export class SupabaseClientService {
     return this.client;
   }
 
-  /** Creates a client only when both public values exist. */
+  /**
+   * Creates a client only when both public values exist.
+   *
+   * @returns The configured client, or null when configuration is missing.
+   */
   private createConfiguredClient(): SupabaseClient<Database> | null {
     if (!this.isConfigured) {
       return null;

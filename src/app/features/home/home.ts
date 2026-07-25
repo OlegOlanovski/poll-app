@@ -47,7 +47,11 @@ export class Home {
     );
   });
 
-  /** Updates the selected survey status. */
+  /**
+   * Updates the selected survey status.
+   *
+   * @param status - Survey status that should be displayed.
+   */
   selectStatus(status: SurveyStatus): void {
     this.selectedStatus.set(status);
   }
@@ -57,7 +61,11 @@ export class Home {
     this.isCategoryMenuOpen.update((isOpen: boolean): boolean => !isOpen);
   }
 
-  /** Filters surveys using the selected category. */
+  /**
+   * Filters surveys using the selected category.
+   *
+   * @param category - Category selected by the user.
+   */
   selectCategory(category: SurveyCategory): void {
     this.selectedCategory.set(category);
     this.isCategoryMenuOpen.set(false);
@@ -68,7 +76,11 @@ export class Home {
     this.selectedCategory.set(null);
   }
 
-  /** Moves the custom desktop scrollbar thumb with the survey list. */
+  /**
+   * Moves the custom desktop scrollbar thumb with the survey list.
+   *
+   * @param event - Scroll event emitted by the survey list.
+   */
   updateSurveyScroll(event: Event): void {
     const list = event.currentTarget as HTMLElement;
     const maxScrollTop = list.scrollHeight - list.clientHeight;

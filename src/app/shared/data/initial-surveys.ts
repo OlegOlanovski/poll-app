@@ -114,7 +114,12 @@ export const INITIAL_SURVEYS: Survey[] = INITIAL_SURVEY_INPUTS.map(
   (input: InitialSurveyInput): Survey => createInitialSurvey(input),
 );
 
-/** Creates one complete initial survey. */
+/**
+ * Creates one complete initial survey.
+ *
+ * @param input - Predefined content used to build the survey.
+ * @returns A complete initial survey.
+ */
 function createInitialSurvey(input: InitialSurveyInput): Survey {
   return {
     id: input.id,
@@ -128,7 +133,12 @@ function createInitialSurvey(input: InitialSurveyInput): Survey {
   };
 }
 
-/** Creates the initial question for a survey. */
+/**
+ * Creates the initial question for a survey.
+ *
+ * @param input - Predefined survey content containing the question and answers.
+ * @returns The initial question belonging to the survey.
+ */
 function createQuestion(input: InitialSurveyInput): SurveyQuestion {
   return {
     id: `${input.id}-question-1`,
@@ -140,7 +150,15 @@ function createQuestion(input: InitialSurveyInput): SurveyQuestion {
   };
 }
 
-/** Creates a stable answer for an initial survey. */
+/**
+ * Creates a stable answer for an initial survey.
+ *
+ * @param surveyId - Identifier of the answer's survey.
+ * @param text - Visible answer text.
+ * @param index - Zero-based answer position.
+ * @param votes - Initial vote total.
+ * @returns A survey answer with a stable identifier.
+ */
 function createAnswer(surveyId: string, text: string, index: number, votes: number): SurveyAnswer {
   return {
     id: `${surveyId}-answer-${index + 1}`,
