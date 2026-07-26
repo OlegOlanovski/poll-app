@@ -66,7 +66,15 @@
                 <label for="survey-end-date"> Set end date <span>(optional)</span> </label>
 
                 <div class="create-survey-form__input-action">
-                  <input id="survey-end-date" type="date" formControlName="endDate" />
+                  <input
+                    id="survey-end-date"
+                    type="date"
+                    formControlName="endDate"
+                    [min]="minimumEndDate"
+                    [attr.aria-invalid]="
+                      surveyForm.controls.endDate.touched && surveyForm.controls.endDate.invalid
+                    "
+                  />
 
                   <button
                     type="button"
@@ -76,6 +84,15 @@
                     <img src="/assets/icon/Delete.svg" width="24" height="24" alt="" />
                   </button>
                 </div>
+
+                @if (
+                  surveyForm.controls.endDate.touched &&
+                  surveyForm.controls.endDate.hasError('dateBeforeMinimum')
+                ) {
+                  <p class="create-survey-form__error" role="alert">
+                    Choose today or a future date.
+                  </p>
+                }
               </div>
 
               <div class="create-survey-form__field create-survey-form__category">

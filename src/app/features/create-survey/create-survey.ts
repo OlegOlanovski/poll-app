@@ -1,10 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import {
+  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -42,10 +45,11 @@ export class CreateSurvey {
   readonly publishError = signal<string | null>(null);
   readonly publishedSurveyId = signal<string | null>(null);
   readonly categories = SURVEY_CATEGORIES;
+  readonly minimumEndDate = formatDateInputValue(new Date());
 
   readonly surveyForm = this.formBuilder.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(MIN_TITLE_LENGTH)]],
-    endDate: [''],
+    endDate: ['', minimumDateValidator(this.minimumEndDate)],
     category: ['', Validators.required],
     description: [''],
     questions: new FormArray<QuestionFormGroup>([this.createQuestionGroup()]),
@@ -268,4 +272,29 @@ export class CreateSurvey {
       answers.removeAt(answers.length - 1);
     }
   }
+}
+
+/**
+ * Formats a local date for an HTML date input.
+ *
+ * @param date - Date whose local calendar value should be formatted.
+ * @returns The date in YYYY-MM-DD format.
+ */
+function formatDateInputValue(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Rejects non-empty date values that occur before the minimum date.
+ *
+ * @param minimumDate - Earliest accepted date in YYYY-MM-DD format.
+ * @returns A validator for optional date controls.
+ */
+function minimumDateValidator(minimumDate: string): ValidatorFn {
+  return (control: AbstractControl<string>): ValidationErrors | null =>
+    control.value && control.value < minimumDate ? { dateBeforeMinimum: true } : null;
 }

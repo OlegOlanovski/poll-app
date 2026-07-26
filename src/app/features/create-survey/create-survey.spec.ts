@@ -38,4 +38,26 @@ describe('CreateSurvey', (): void => {
     expect(component.surveyForm.controls.category.value).toBe('');
     expect(component.surveyForm.controls.category.invalid).toBe(true);
   });
+
+  it('should reject an end date in the past', (): void => {
+    const endDateControl = component.surveyForm.controls.endDate;
+
+    endDateControl.setValue('1900-01-01');
+
+    expect(endDateControl.hasError('dateBeforeMinimum')).toBe(true);
+  });
+
+  it('should allow today as the end date', (): void => {
+    const endDateControl = component.surveyForm.controls.endDate;
+
+    endDateControl.setValue(component.minimumEndDate);
+
+    expect(endDateControl.valid).toBe(true);
+  });
+
+  it('should expose today as the calendar minimum', (): void => {
+    const dateInput = fixture.nativeElement.querySelector('#survey-end-date') as HTMLInputElement;
+
+    expect(dateInput.min).toBe(component.minimumEndDate);
+  });
 });
