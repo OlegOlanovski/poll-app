@@ -146,7 +146,7 @@
 
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .create-survey-form__metadata-row {
@@ -163,7 +163,7 @@
 
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .create-survey-form__field label {
@@ -380,13 +380,13 @@
 }
 
 .create-survey-form__error {
-  margin: 0;
+  margin: 2px 0 0;
 
   color: #ffcfa1;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
-  line-height: 15px;
+  line-height: 18px;
 }
 
 .create-survey-form__questions {
@@ -458,9 +458,9 @@
 
   color: #ffffff;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
-  line-height: 15px;
+  line-height: 18px;
 }
 
 .question-form__multiple input {
@@ -485,7 +485,7 @@
 
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .question-form__answer {
@@ -1030,7 +1030,7 @@
 
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
   }
 
   .create-survey-form__metadata,
@@ -1044,7 +1044,7 @@
   .create-survey-form__metadata-row {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
   }
 
   .create-survey-form__metadata-row > .create-survey-form__field:first-child {
