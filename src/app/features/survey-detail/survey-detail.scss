@@ -236,12 +236,13 @@
 }
 
 .survey-answer {
-  width: 291px;
+  width: fit-content;
+  max-width: 291px;
   min-height: 21px;
   padding-inline: 4px;
 
   display: grid;
-  grid-template-columns: 21px 17px minmax(0, 1fr);
+  grid-template-columns: 21px 17px minmax(0, max-content);
   align-items: start;
   column-gap: 4px;
 
@@ -578,9 +579,12 @@
 
   .survey-question,
   .survey-question legend,
-  .survey-question__answers,
-  .survey-answer {
+  .survey-question__answers {
     width: 100%;
+  }
+
+  .survey-answer {
+    max-width: 100%;
   }
 
   .survey-voting-form__submit {
@@ -735,9 +739,12 @@
 
   .survey-question,
   .survey-question legend,
-  .survey-question__answers,
-  .survey-answer {
+  .survey-question__answers {
     width: 100%;
+  }
+
+  .survey-answer {
+    max-width: 100%;
   }
 
   .survey-question {
