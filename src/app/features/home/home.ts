@@ -48,12 +48,13 @@ export class Home {
   });
 
   /**
-   * Updates the selected survey status.
+   * Updates the selected survey status and removes any category filter.
    *
    * @param status - Survey status that should be displayed.
    */
   selectStatus(status: SurveyStatus): void {
     this.selectedStatus.set(status);
+    this.clearCategory();
   }
 
   /** Opens or closes the category menu. */
