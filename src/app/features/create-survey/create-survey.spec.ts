@@ -60,4 +60,16 @@ describe('CreateSurvey', (): void => {
 
     expect(dateInput.min).toBe(component.minimumEndDate);
   });
+
+  it('should toggle multiple answers from the checkbox', (): void => {
+    const checkbox = fixture.nativeElement.querySelector(
+      '.question-form__multiple input',
+    ) as HTMLInputElement;
+
+    checkbox.click();
+    fixture.detectChanges();
+
+    expect(component.questions.at(0).controls.allowMultipleAnswers.value).toBe(true);
+    expect(checkbox.checked).toBe(true);
+  });
 });
