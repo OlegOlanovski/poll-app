@@ -10,9 +10,12 @@
 
 .create-survey-page {
   width: 100%;
-  min-height: 1024px;
+  min-height: max(1024px, 100vh);
   margin: 0;
   padding: 72px 0 108px;
+
+  display: flex;
+  align-items: center;
 
   color: #fefdff;
   background-color: #fefdff;
