@@ -43,8 +43,14 @@ describe('Home', (): void => {
     expect(compiled.querySelector('h1')?.textContent).toContain('Collect Feedback');
   });
   it('should show active surveys by default', (): void => {
+    const listShell = fixture.nativeElement.querySelector(
+      '.survey-browser__list-shell',
+    ) as HTMLElement;
+
     expect(component.selectedStatus()).toBe('active');
     expect(component.filteredSurveys()).toHaveLength(6);
+    expect(component.hasScrollableSurveyList()).toBe(false);
+    expect(listShell.classList.contains('survey-browser__list-shell--scrollable')).toBe(false);
   });
 
   it('should show past surveys after selecting past status', (): void => {
@@ -116,8 +122,15 @@ describe('Home', (): void => {
     const surveyStore = TestBed.inject(SurveyStore);
 
     await surveyStore.addSurvey(NEW_SURVEY_DATA);
+    fixture.detectChanges();
+
+    const listShell = fixture.nativeElement.querySelector(
+      '.survey-browser__list-shell',
+    ) as HTMLElement;
 
     expect(component.filteredSurveys()).toHaveLength(initialSurveyCount + 1);
+    expect(component.hasScrollableSurveyList()).toBe(true);
+    expect(listShell.classList.contains('survey-browser__list-shell--scrollable')).toBe(true);
   });
 
   it('should not make past surveys clickable', (): void => {

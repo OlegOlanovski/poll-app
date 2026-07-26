@@ -602,7 +602,7 @@
   position: relative;
 }
 
-.survey-browser__list-shell::after {
+.survey-browser__list-shell--scrollable::after {
   width: 8px;
   height: 64px;
 
@@ -704,8 +704,8 @@
     min-height: 0;
   }
 
-  .survey-browser__list-shell::after {
-    display: none;
+  .survey-browser__list-shell--scrollable::after {
+    right: -8px;
   }
 
   .survey-browser__list {

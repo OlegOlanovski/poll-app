@@ -13,6 +13,7 @@ const URGENT_SURVEY_COUNT = 3;
 const URGENT_SCROLL_SIDE_GUTTER = 32;
 const URGENT_SCROLL_THUMB_WIDTH = 64;
 const SURVEY_SCROLL_THUMB_HEIGHT = 64;
+const VISIBLE_SURVEY_CARD_COUNT = 6;
 
 @Component({
   selector: 'app-home',
@@ -49,6 +50,9 @@ export class Home {
         (selectedCategory === null || survey.category === selectedCategory),
     );
   });
+  readonly hasScrollableSurveyList = computed<boolean>(
+    () => this.filteredSurveys().length > VISIBLE_SURVEY_CARD_COUNT,
+  );
 
   /**
    * Updates the selected survey status and removes any category filter.
@@ -73,12 +77,14 @@ export class Home {
   selectCategory(category: SurveyCategory): void {
     this.selectedCategory.set(category);
     this.isCategoryMenuOpen.set(false);
+    this.surveyScrollThumbOffset.set('0px');
   }
 
   /** Removes the selected category filter. */
   clearCategory(): void {
     this.selectedCategory.set(null);
     this.isCategoryMenuOpen.set(false);
+    this.surveyScrollThumbOffset.set('0px');
   }
 
   /**
