@@ -34,11 +34,7 @@ export class SurveyDetail {
     this.surveyStore.getSurveyById(this.surveyId),
   );
   readonly hasResults = computed<boolean>(() =>
-    Boolean(
-      this.survey()?.questions.some((question: SurveyQuestion): boolean =>
-        question.answers.some((answer: SurveyAnswer): boolean => answer.votes > 0),
-      ),
-    ),
+    Boolean(this.hasStoredResults() || this.hasPreviewSelections()),
   );
   readonly canComplete = computed<boolean>(() => {
     const survey = this.survey();
@@ -154,11 +150,42 @@ export class SurveyDetail {
    */
   getVotePercentage(question: SurveyQuestion, answer: SurveyAnswer): number {
     const totalVotes = question.answers.reduce(
-      (total: number, currentAnswer: SurveyAnswer): number => total + currentAnswer.votes,
+      (total: number, currentAnswer: SurveyAnswer): number =>
+        total + this.getDisplayedVotes(question.id, currentAnswer),
       0,
     );
+    const answerVotes = this.getDisplayedVotes(question.id, answer);
 
-    return totalVotes === 0 ? 0 : Math.round((answer.votes / totalVotes) * PERCENTAGE_MULTIPLIER);
+    return totalVotes === 0 ? 0 : Math.round((answerVotes / totalVotes) * PERCENTAGE_MULTIPLIER);
+  }
+
+  /** Returns whether the loaded survey already contains saved votes. */
+  private hasStoredResults(): boolean {
+    return Boolean(
+      this.survey()?.questions.some((question: SurveyQuestion): boolean =>
+        question.answers.some((answer: SurveyAnswer): boolean => answer.votes > 0),
+      ),
+    );
+  }
+
+  /** Returns whether the participant has selected at least one answer. */
+  private hasPreviewSelections(): boolean {
+    return Object.values(this.selections()).some(
+      (selectedAnswerIds: string[]): boolean => selectedAnswerIds.length > 0,
+    );
+  }
+
+  /**
+   * Returns saved votes plus the participant's unsaved preview vote.
+   *
+   * @param questionId - Identifier of the answer's question.
+   * @param answer - Answer whose displayed votes should be calculated.
+   * @returns Vote count shown in the live result.
+   */
+  private getDisplayedVotes(questionId: string, answer: SurveyAnswer): number {
+    const isPreviewVote = !this.hasSubmitted() && this.isAnswerSelected(questionId, answer.id);
+
+    return answer.votes + Number(isPreviewVote);
   }
 
   /**

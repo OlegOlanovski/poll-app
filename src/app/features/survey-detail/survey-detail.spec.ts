@@ -65,6 +65,33 @@ describe('SurveyDetail', (): void => {
     expect(component.getVotePercentage(SINGLE_QUESTION, SECOND_ANSWER)).toBe(75);
   });
 
+  it('should preview the selected answer in live results', (): void => {
+    component.toggleAnswer(SINGLE_QUESTION, FIRST_ANSWER.id);
+
+    expect(component.getVotePercentage(SINGLE_QUESTION, FIRST_ANSWER)).toBe(40);
+    expect(component.getVotePercentage(SINGLE_QUESTION, SECOND_ANSWER)).toBe(60);
+  });
+
+  it('should show results after the first answer is selected', (): void => {
+    const questionWithoutVotes: SurveyQuestion = {
+      ...SINGLE_QUESTION,
+      answers: [
+        { ...FIRST_ANSWER, votes: 0 },
+        { ...SECOND_ANSWER, votes: 0 },
+      ],
+    };
+
+    component.toggleAnswer(questionWithoutVotes, FIRST_ANSWER.id);
+
+    expect(component.hasResults()).toBe(true);
+    expect(component.getVotePercentage(questionWithoutVotes, questionWithoutVotes.answers[0])).toBe(
+      100,
+    );
+    expect(component.getVotePercentage(questionWithoutVotes, questionWithoutVotes.answers[1])).toBe(
+      0,
+    );
+  });
+
   it('should toggle the mobile results accordion', (): void => {
     component.toggleResults();
 
