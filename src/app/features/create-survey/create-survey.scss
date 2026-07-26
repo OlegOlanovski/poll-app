@@ -771,21 +771,7 @@
   }
 }
 
-@media (max-width: 960px) {
-  .create-survey {
-    padding: 32px 24px;
-    border-top-right-radius: 72px;
-  }
-
-  .create-survey__header {
-    height: auto;
-    align-items: flex-start;
-  }
-
-  .create-survey-form__panel {
-    padding: 32px 24px;
-  }
-
+@media (max-width: 1140px) {
   .create-survey-form__information {
     grid-template-columns: 1fr;
   }
@@ -807,6 +793,32 @@
   .create-survey-form__metadata > .create-survey-form__field:first-child input,
   .create-survey-form__description textarea {
     width: calc(100% - 34px);
+  }
+}
+
+@media (max-width: 960px) {
+  .create-survey {
+    padding: 32px 24px;
+    border-top-right-radius: 72px;
+  }
+
+  .create-survey__header {
+    height: auto;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .create-survey__heading {
+    width: min(100%, 588px);
+    min-width: 0;
+  }
+
+  .create-survey__header h1 {
+    width: 100%;
+  }
+
+  .create-survey-form__panel {
+    padding: 32px 24px;
   }
 
   .create-survey-form__questions {

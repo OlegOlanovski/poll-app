@@ -10,6 +10,8 @@ import { SurveyPreview, SurveyStatus } from '../../shared/models/survey-preview'
 import { sortSurveysByEndDate } from '../../shared/utils/survey-date';
 
 const URGENT_SURVEY_COUNT = 3;
+const URGENT_SCROLL_SIDE_GUTTER = 32;
+const URGENT_SCROLL_THUMB_WIDTH = 64;
 const SURVEY_SCROLL_THUMB_HEIGHT = 64;
 
 @Component({
@@ -29,6 +31,7 @@ export class Home {
   readonly selectedCategory = signal<SurveyCategory | null>(null);
   readonly selectedStatus = signal<SurveyStatus>('active');
   readonly surveyScrollThumbOffset = signal('0px');
+  readonly urgentScrollThumbOffset = signal('0px');
   readonly urgentSurveys = computed<SurveyPreview[]>(() => {
     const activeSurveys = this.allSurveys().filter(
       (survey: SurveyPreview): boolean => survey.status === 'active',
@@ -76,6 +79,21 @@ export class Home {
   clearCategory(): void {
     this.selectedCategory.set(null);
     this.isCategoryMenuOpen.set(false);
+  }
+
+  /**
+   * Moves the persistent mobile scrollbar with the urgent survey cards.
+   *
+   * @param event - Scroll event emitted by the urgent survey list.
+   */
+  updateUrgentScroll(event: Event): void {
+    const list = event.currentTarget as HTMLElement;
+    const maxScrollLeft = list.scrollWidth - list.clientWidth;
+    const trackWidth = list.clientWidth - URGENT_SCROLL_SIDE_GUTTER;
+    const maxThumbOffset = Math.max(trackWidth - URGENT_SCROLL_THUMB_WIDTH, 0);
+    const scrollProgress = maxScrollLeft === 0 ? 0 : list.scrollLeft / maxScrollLeft;
+
+    this.urgentScrollThumbOffset.set(`${Math.round(maxThumbOffset * scrollProgress)}px`);
   }
 
   /**

@@ -72,7 +72,7 @@
     <div class="surveys-preview__urgent">
       <p class="surveys-preview__subtitle">Ending soon surveys</p>
 
-      <div class="surveys-preview__grid">
+      <div class="surveys-preview__grid" (scroll)="updateUrgentScroll($event)">
         @for (survey of urgentSurveys(); track survey.id) {
           <a
             class="survey-link"
@@ -83,6 +83,12 @@
           </a>
         }
       </div>
+
+      <span
+        class="surveys-preview__scrollbar"
+        aria-hidden="true"
+        [style.--urgent-scroll-thumb-offset]="urgentScrollThumbOffset()"
+      ></span>
     </div>
   </section>
   <section class="survey-browser" aria-label="Survey list">

@@ -142,4 +142,16 @@ describe('Home', (): void => {
 
     expect(component.surveyScrollThumbOffset()).toBe('175px');
   });
+
+  it('should move the persistent mobile card scroll thumb', (): void => {
+    const list = {
+      clientWidth: 320,
+      scrollLeft: 240,
+      scrollWidth: 800,
+    } as HTMLElement;
+
+    component.updateUrgentScroll({ currentTarget: list } as unknown as Event);
+
+    expect(component.urgentScrollThumbOffset()).toBe('112px');
+  });
 });
