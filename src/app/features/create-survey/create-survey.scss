@@ -1120,7 +1120,7 @@
 
   .create-survey-form__questions {
     width: 100%;
-    min-height: 754px;
+    min-height: 0;
 
     display: flex;
     flex-direction: column;
@@ -1188,7 +1188,7 @@
   }
 
   .create-survey-form__add-question {
-    margin-top: auto;
+    margin-top: 0;
 
     align-self: center;
   }
