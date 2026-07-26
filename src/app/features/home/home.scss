@@ -836,6 +836,7 @@
     justify-content: flex-start;
     gap: 16px;
     overflow-x: auto;
+    scroll-padding-inline: 16px;
     scroll-snap-type: x proximity;
     scrollbar-width: none;
   }
