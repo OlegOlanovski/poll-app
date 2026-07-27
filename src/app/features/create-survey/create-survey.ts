@@ -48,7 +48,7 @@ export class CreateSurvey {
   readonly minimumEndDate = formatDateInputValue(new Date());
 
   readonly surveyForm = this.formBuilder.nonNullable.group({
-    title: ['', [Validators.required, Validators.minLength(MIN_TITLE_LENGTH)]],
+    title: ['', trimmedTextValidator(MIN_TITLE_LENGTH)],
     endDate: ['', minimumDateValidator(this.minimumEndDate)],
     category: ['', Validators.required],
     description: [''],
@@ -227,7 +227,7 @@ export class CreateSurvey {
    */
   private createQuestionGroup(): QuestionFormGroup {
     return this.formBuilder.nonNullable.group({
-      question: ['', Validators.required],
+      question: ['', trimmedTextValidator()],
       allowMultipleAnswers: [false],
       answers: new FormArray<AnswerControl>([
         this.createAnswerControl(),
@@ -242,7 +242,7 @@ export class CreateSurvey {
    * @returns A new non-nullable answer control with required validation.
    */
   private createAnswerControl(): AnswerControl {
-    return this.formBuilder.nonNullable.control('', Validators.required);
+    return this.formBuilder.nonNullable.control('', trimmedTextValidator());
   }
 
   /**
@@ -297,4 +297,24 @@ function formatDateInputValue(date: Date): string {
 function minimumDateValidator(minimumDate: string): ValidatorFn {
   return (control: AbstractControl<string>): ValidationErrors | null =>
     control.value && control.value < minimumDate ? { dateBeforeMinimum: true } : null;
+}
+
+/**
+ * Rejects required text that is empty, whitespace-only, or too short after trimming.
+ *
+ * @param minimumLength - Minimum accepted trimmed text length.
+ * @returns A validator for required text controls.
+ */
+function trimmedTextValidator(minimumLength = 1): ValidatorFn {
+  return (control: AbstractControl<string>): ValidationErrors | null => {
+    const trimmedValue = control.value.trim();
+
+    if (!trimmedValue) {
+      return { required: true };
+    }
+
+    return trimmedValue.length < minimumLength
+      ? { minlength: { requiredLength: minimumLength, actualLength: trimmedValue.length } }
+      : null;
+  };
 }

@@ -11,6 +11,7 @@ const DATE_FORMATTER = new Intl.DateTimeFormat('de-DE', {
 });
 const FIRST_ANSWER_CHARACTER_CODE = 65;
 const PERCENTAGE_MULTIPLIER = 100;
+const SUBMISSION_SUCCESS_MESSAGE = 'Thank you! Your answers have been saved.';
 
 @Component({
   selector: 'app-survey-detail',
@@ -30,6 +31,9 @@ export class SurveyDetail {
   readonly isLoading = this.surveyStore.isLoading;
   readonly isSubmitting = signal(false);
   readonly submissionError = signal<string | null>(null);
+  readonly submissionFeedback = computed<string | null>(() =>
+    this.hasSubmitted() ? SUBMISSION_SUCCESS_MESSAGE : this.submissionError(),
+  );
   readonly survey = computed<Survey | undefined>(() =>
     this.surveyStore.getSurveyById(this.surveyId),
   );

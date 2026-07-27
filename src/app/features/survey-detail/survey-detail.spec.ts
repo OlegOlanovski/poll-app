@@ -97,4 +97,10 @@ describe('SurveyDetail', (): void => {
 
     expect(component.isResultsOpen()).toBe(false);
   });
+
+  it('should provide feedback after a successful submission', (): void => {
+    component.hasSubmitted.set(true);
+
+    expect(component.submissionFeedback()).toBe('Thank you! Your answers have been saved.');
+  });
 });

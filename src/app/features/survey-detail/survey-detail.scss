@@ -322,13 +322,35 @@
   opacity: 0.55;
 }
 
-.survey-voting-form__error {
-  margin: 8px 0 0;
-  color: #a64343;
+.survey-voting-form__actions {
+  width: 100%;
+
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.survey-voting-form__feedback {
+  width: min(100%, 315px);
+  min-height: 18px;
+  margin: 0;
+
+  visibility: hidden;
+  color: #35273a;
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 700;
   line-height: 18px;
+  text-align: right;
+}
+
+.survey-voting-form__feedback--visible {
+  visibility: visible;
+}
+
+.survey-voting-form__feedback--error {
+  color: #a64343;
 }
 
 .survey-results {
@@ -793,6 +815,14 @@
   .survey-voting-form__submit img {
     width: 18px;
     height: 16px;
+  }
+
+  .survey-voting-form__actions {
+    align-items: center;
+  }
+
+  .survey-voting-form__feedback {
+    text-align: center;
   }
 
   .survey-results-toggle {

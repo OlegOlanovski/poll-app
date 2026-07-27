@@ -90,24 +90,32 @@
             </section>
 
             @if (currentSurvey.status === 'active') {
-              <button
-                class="survey-voting-form__submit"
-                type="submit"
-                [disabled]="!canComplete() || hasSubmitted() || isSubmitting()"
-                [attr.aria-busy]="isSubmitting()"
-              >
-                <span class="survey-voting-form__submit-label--desktop">
-                  {{ hasSubmitted() ? 'Survey completed' : 'Complete survey' }}
-                </span>
-                <span class="survey-voting-form__submit-label--mobile">
-                  {{ hasSubmitted() ? 'Completed' : 'Complete' }}
-                </span>
-                <img src="/assets/icon/check-dark.svg" width="18" height="16" alt="" />
-              </button>
+              <footer class="survey-voting-form__actions">
+                <button
+                  class="survey-voting-form__submit"
+                  type="submit"
+                  [disabled]="!canComplete() || hasSubmitted() || isSubmitting()"
+                  [attr.aria-busy]="isSubmitting()"
+                >
+                  <span class="survey-voting-form__submit-label--desktop">
+                    {{ hasSubmitted() ? 'Survey completed' : 'Complete survey' }}
+                  </span>
+                  <span class="survey-voting-form__submit-label--mobile">
+                    {{ hasSubmitted() ? 'Completed' : 'Complete' }}
+                  </span>
+                  <img src="/assets/icon/check-dark.svg" width="18" height="16" alt="" />
+                </button>
 
-              @if (submissionError(); as message) {
-                <p class="survey-voting-form__error" role="alert">{{ message }}</p>
-              }
+                <p
+                  class="survey-voting-form__feedback"
+                  [class.survey-voting-form__feedback--visible]="submissionFeedback() !== null"
+                  [class.survey-voting-form__feedback--error]="submissionError() !== null"
+                  [attr.role]="hasSubmitted() ? 'status' : submissionError() ? 'alert' : null"
+                  [attr.aria-hidden]="submissionFeedback() === null"
+                >
+                  {{ submissionFeedback() ?? 'Your answers have been saved.' }}
+                </p>
+              </footer>
             }
           </form>
         </div>

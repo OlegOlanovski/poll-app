@@ -54,11 +54,24 @@
                 </button>
               </div>
 
-              @if (surveyForm.controls.title.touched && surveyForm.controls.title.invalid) {
-                <p class="create-survey-form__error" role="alert">
-                  Enter a survey name with at least 3 characters.
-                </p>
-              }
+              <p
+                class="create-survey-form__error create-survey-form__validation-slot"
+                [style.visibility]="
+                  surveyForm.controls.title.touched && surveyForm.controls.title.invalid
+                    ? 'visible'
+                    : 'hidden'
+                "
+                [attr.role]="
+                  surveyForm.controls.title.touched && surveyForm.controls.title.invalid
+                    ? 'alert'
+                    : null
+                "
+                [attr.aria-hidden]="
+                  !(surveyForm.controls.title.touched && surveyForm.controls.title.invalid)
+                "
+              >
+                Enter a survey name with at least 3 characters.
+              </p>
             </div>
 
             <div class="create-survey-form__metadata-row">
@@ -85,14 +98,29 @@
                   </button>
                 </div>
 
-                @if (
-                  surveyForm.controls.endDate.touched &&
-                  surveyForm.controls.endDate.hasError('dateBeforeMinimum')
-                ) {
-                  <p class="create-survey-form__error" role="alert">
-                    Choose today or a future date.
-                  </p>
-                }
+                <p
+                  class="create-survey-form__error create-survey-form__validation-slot"
+                  [style.visibility]="
+                    surveyForm.controls.endDate.touched &&
+                    surveyForm.controls.endDate.hasError('dateBeforeMinimum')
+                      ? 'visible'
+                      : 'hidden'
+                  "
+                  [attr.role]="
+                    surveyForm.controls.endDate.touched &&
+                    surveyForm.controls.endDate.hasError('dateBeforeMinimum')
+                      ? 'alert'
+                      : null
+                  "
+                  [attr.aria-hidden]="
+                    !(
+                      surveyForm.controls.endDate.touched &&
+                      surveyForm.controls.endDate.hasError('dateBeforeMinimum')
+                    )
+                  "
+                >
+                  Choose today or a future date.
+                </p>
               </div>
 
               <div class="create-survey-form__field create-survey-form__category">
@@ -158,9 +186,24 @@
                   </button>
                 }
 
-                @if (surveyForm.controls.category.touched && surveyForm.controls.category.invalid) {
-                  <p class="create-survey-form__error" role="alert">Select a category.</p>
-                }
+                <p
+                  class="create-survey-form__error create-survey-form__validation-slot"
+                  [style.visibility]="
+                    surveyForm.controls.category.touched && surveyForm.controls.category.invalid
+                      ? 'visible'
+                      : 'hidden'
+                  "
+                  [attr.role]="
+                    surveyForm.controls.category.touched && surveyForm.controls.category.invalid
+                      ? 'alert'
+                      : null
+                  "
+                  [attr.aria-hidden]="
+                    !(surveyForm.controls.category.touched && surveyForm.controls.category.invalid)
+                  "
+                >
+                  Select a category.
+                </p>
               </div>
             </div>
           </div>
@@ -230,11 +273,27 @@
                 required
               />
 
-              @if (
-                questionGroup.controls.question.touched && questionGroup.controls.question.invalid
-              ) {
-                <p class="create-survey-form__error" role="alert">Enter a question.</p>
-              }
+              <p
+                class="create-survey-form__error create-survey-form__validation-slot"
+                [style.visibility]="
+                  questionGroup.controls.question.touched && questionGroup.controls.question.invalid
+                    ? 'visible'
+                    : 'hidden'
+                "
+                [attr.role]="
+                  questionGroup.controls.question.touched && questionGroup.controls.question.invalid
+                    ? 'alert'
+                    : null
+                "
+                [attr.aria-hidden]="
+                  !(
+                    questionGroup.controls.question.touched &&
+                    questionGroup.controls.question.invalid
+                  )
+                "
+              >
+                Enter a question.
+              </p>
 
               <div class="question-form__answers-header">
                 <h3>
@@ -279,9 +338,16 @@
                       <img src="/assets/icon/Delete.svg" width="24" height="24" alt="" />
                     </button>
 
-                    @if (answerControl.touched && answerControl.invalid) {
-                      <p class="create-survey-form__error" role="alert">Enter an answer.</p>
-                    }
+                    <p
+                      class="create-survey-form__error create-survey-form__validation-slot"
+                      [style.visibility]="
+                        answerControl.touched && answerControl.invalid ? 'visible' : 'hidden'
+                      "
+                      [attr.role]="answerControl.touched && answerControl.invalid ? 'alert' : null"
+                      [attr.aria-hidden]="!(answerControl.touched && answerControl.invalid)"
+                    >
+                      Enter an answer.
+                    </p>
                   </div>
                 }
               </section>
@@ -316,9 +382,14 @@
           />
         </button>
 
-        @if (publishError(); as message) {
-          <p class="create-survey-form__submit-error" role="alert">{{ message }}</p>
-        }
+        <p
+          class="create-survey-form__submit-error create-survey-form__validation-slot"
+          [style.visibility]="publishError() !== null ? 'visible' : 'hidden'"
+          [attr.role]="publishError() !== null ? 'alert' : null"
+          [attr.aria-hidden]="publishError() === null"
+        >
+          {{ publishError() ?? 'The survey could not be published. Please try again.' }}
+        </p>
       </footer>
     </form>
   </section>
