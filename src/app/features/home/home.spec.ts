@@ -75,9 +75,16 @@ describe('Home', (): void => {
 
   it('should filter surveys by category', (): void => {
     component.selectCategory('Team Activities');
+    fixture.detectChanges();
+
+    const listShell = fixture.nativeElement.querySelector(
+      '.survey-browser__list-shell',
+    ) as HTMLElement;
 
     expect(component.selectedCategory()).toBe('Team Activities');
     expect(component.filteredSurveys()).toHaveLength(2);
+    expect(component.hasScrollableSurveyList()).toBe(false);
+    expect(listShell.classList.contains('survey-browser__list-shell--scrollable')).toBe(false);
     expect(
       component.filteredSurveys().every((survey) => survey.category === 'Team Activities'),
     ).toBe(true);
