@@ -93,6 +93,22 @@ describe('Home', (): void => {
     expect(component.filteredSurveys()).toHaveLength(6);
   });
 
+  it('should clear the category from the All categories menu option', (): void => {
+    component.selectCategory('Team Activities');
+    component.toggleCategoryMenu();
+    fixture.detectChanges();
+
+    const allCategoriesButton = fixture.nativeElement.querySelector(
+      '.survey-browser__category-option--all',
+    ) as HTMLButtonElement;
+
+    allCategoriesButton.click();
+
+    expect(component.selectedCategory()).toBeNull();
+    expect(component.isCategoryMenuOpen()).toBe(false);
+    expect(component.filteredSurveys()).toHaveLength(6);
+  });
+
   it('should sort urgent surveys by end date', (): void => {
     const endTimes = component
       .urgentSurveys()
