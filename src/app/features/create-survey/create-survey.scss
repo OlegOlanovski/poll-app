@@ -106,14 +106,34 @@
   width: 24px;
   height: 24px;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
 
-  font-family: var(--font-body);
-  font-size: 30px;
-  font-weight: 400;
-  line-height: 20px;
+  display: block;
+  flex: 0 0 auto;
+
+  font-size: 0;
+}
+
+.create-survey__close-icon::before,
+.create-survey__close-icon::after {
+  width: 18px;
+  height: 2px;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  content: '';
+  background-color: currentColor;
+  border-radius: 2px;
+}
+
+.create-survey__close-icon::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.create-survey__close-icon::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 .create-survey-form {
@@ -223,11 +243,11 @@
 .create-survey-form__metadata
   > .create-survey-form__field:first-child
   .create-survey-form__input-action {
-  width: 463px;
+  width: 470px;
 }
 
 .create-survey-form__metadata > .create-survey-form__field:first-child input {
-  width: 429px;
+  width: 430px;
 }
 
 .create-survey-form__metadata-row > .create-survey-form__field:first-child {
@@ -235,17 +255,17 @@
 }
 
 .create-survey-form__metadata-row > .create-survey-form__field:first-child input {
-  width: 222px;
+  width: 216px;
 }
 
 .create-survey-form__input-action button,
 .question-form__header button,
 .question-form__answer button {
-  width: 26px;
-  height: 26px;
+  width: 32px;
+  height: 32px;
   padding: 4px;
 
-  flex: 0 0 26px;
+  flex: 0 0 32px;
 
   background: transparent;
   border: 0;
@@ -255,8 +275,8 @@
 .create-survey-form__input-action button img,
 .question-form__header button img,
 .question-form__answer button img {
-  width: 18px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
 }
 
 .create-survey-form__category {
@@ -379,7 +399,7 @@
 }
 
 .create-survey-form__description textarea {
-  width: 418px;
+  width: 412px;
   height: 108px;
   resize: none;
 }
@@ -503,7 +523,7 @@
   min-height: 37px;
 
   display: grid;
-  grid-template-columns: 23px 363px 26px;
+  grid-template-columns: 23px 357px 32px;
   align-items: center;
   column-gap: 6px;
 }
@@ -517,7 +537,7 @@
 }
 
 .question-form__answer input {
-  width: 363px;
+  width: 357px;
 }
 
 .question-form__answer .create-survey-form__error {
@@ -802,7 +822,7 @@
 
   .create-survey-form__metadata > .create-survey-form__field:first-child input,
   .create-survey-form__description textarea {
-    width: calc(100% - 34px);
+    width: calc(100% - 40px);
   }
 }
 
@@ -917,7 +937,7 @@
   }
 
   .question-form__answer {
-    grid-template-columns: 23px minmax(0, 1fr) 26px;
+    grid-template-columns: 23px minmax(0, 1fr) 32px;
   }
 
   .question-form__answer input {
@@ -1110,7 +1130,7 @@
 
   .create-survey-form__input-action button {
     position: absolute;
-    top: 0;
+    top: -5px;
     right: 0;
   }
 
@@ -1152,10 +1172,10 @@
   }
 
   .question-form__answer {
-    min-height: 65px;
+    min-height: 73px;
 
-    grid-template-columns: minmax(0, 1fr) 26px;
-    grid-template-rows: 24px 37px;
+    grid-template-columns: minmax(0, 1fr) 32px;
+    grid-template-rows: 32px 37px;
     align-items: center;
     column-gap: 8px;
     row-gap: 4px;
