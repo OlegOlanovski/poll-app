@@ -14,6 +14,11 @@ interface InitialSurveyInput {
   votes?: readonly number[];
 }
 
+/**
+ * Provides deterministic fallback data for unit tests and local development
+ * when Supabase is not configured. Production loads its surveys from Supabase
+ * and does not use these entries.
+ */
 const INITIAL_SURVEY_INPUTS: readonly InitialSurveyInput[] = [
   {
     id: 'team-event-list',
