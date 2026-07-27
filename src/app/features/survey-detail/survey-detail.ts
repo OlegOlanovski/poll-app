@@ -33,6 +33,7 @@ export class SurveyDetail {
   readonly survey = computed<Survey | undefined>(() =>
     this.surveyStore.getSurveyById(this.surveyId),
   );
+  readonly isReadOnly = computed<boolean>(() => this.survey()?.status === 'past');
   readonly hasResults = computed<boolean>(() =>
     Boolean(this.hasStoredResults() || this.hasPreviewSelections()),
   );
@@ -40,7 +41,8 @@ export class SurveyDetail {
     const survey = this.survey();
 
     return Boolean(
-      survey?.questions.every(
+      survey?.status === 'active' &&
+      survey.questions.every(
         (question: SurveyQuestion): boolean => (this.selections()[question.id]?.length ?? 0) > 0,
       ),
     );
@@ -53,7 +55,7 @@ export class SurveyDetail {
    * @param answerId - Identifier of the answer selected by the user.
    */
   toggleAnswer(question: SurveyQuestion, answerId: string): void {
-    if (this.hasSubmitted()) {
+    if (this.hasSubmitted() || this.isReadOnly()) {
       return;
     }
 

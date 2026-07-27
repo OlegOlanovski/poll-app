@@ -19,7 +19,9 @@
     <div class="survey-detail-layout">
       <article class="survey-detail-card">
         <div class="survey-detail-card__status-row">
-          <p class="survey-detail-card__status">Published</p>
+          <p class="survey-detail-card__status">
+            {{ isReadOnly() ? 'Past survey' : 'Published' }}
+          </p>
 
           <a class="survey-detail-card__close" routerLink="/" aria-label="Close survey">×</a>
         </div>
@@ -27,13 +29,22 @@
         <div class="survey-detail-card__content">
           <header class="survey-detail-card__summary">
             <div class="survey-detail-card__meta">
-              <span>Ends on {{ getDeadlineLabel(currentSurvey.endDate) }}</span>
+              <span>
+                {{ isReadOnly() ? 'Ended on' : 'Ends on' }}
+                {{ getDeadlineLabel(currentSurvey.endDate) }}
+              </span>
               <span>Category: {{ currentSurvey.category }}</span>
             </div>
 
             <h1>{{ currentSurvey.title }}</h1>
 
             <p>{{ currentSurvey.description }}</p>
+
+            @if (isReadOnly()) {
+              <p class="survey-detail-card__closed-notice">
+                This survey has ended. Voting is closed and the final results are shown below.
+              </p>
+            }
           </header>
 
           <form class="survey-voting-form" (submit)="completeSurvey(); $event.preventDefault()">
@@ -65,7 +76,7 @@
                         <input
                           type="checkbox"
                           [checked]="isAnswerSelected(question.id, answer.id)"
-                          [disabled]="hasSubmitted() || currentSurvey.status === 'past'"
+                          [disabled]="hasSubmitted() || isReadOnly()"
                           (change)="toggleAnswer(question, answer.id)"
                         />
 
@@ -120,7 +131,9 @@
         aria-labelledby="survey-results-title"
         aria-live="polite"
       >
-        <h2 id="survey-results-title">Survey results <span>LIVE</span></h2>
+        <h2 id="survey-results-title">
+          Survey results <span>{{ isReadOnly() ? 'FINAL' : 'LIVE' }}</span>
+        </h2>
 
         @if (hasResults()) {
           <div class="survey-results__questions">

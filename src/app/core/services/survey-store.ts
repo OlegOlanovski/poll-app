@@ -77,6 +77,8 @@ export class SurveyStore {
    * @returns A promise that resolves after the vote is stored.
    */
   async submitVote(surveyId: string, selections: SurveySelections): Promise<void> {
+    this.assertSurveyAcceptsVotes(surveyId);
+
     if (this.repository.isConfigured) {
       await this.runRemoteMutation((): Promise<void> =>
         this.repository.submitVote(surveyId, selections),
@@ -89,6 +91,20 @@ export class SurveyStore {
         survey.id === surveyId ? this.addVotes(survey, selections) : survey,
       ),
     );
+  }
+
+  /**
+   * Prevents votes from being submitted to missing or expired surveys.
+   *
+   * @param surveyId - Identifier of the survey that should receive a vote.
+   * @throws An error when the survey is unavailable or no longer active.
+   */
+  private assertSurveyAcceptsVotes(surveyId: string): void {
+    const survey = this.getSurveyById(surveyId);
+
+    if (survey?.status !== 'active') {
+      throw new Error('This survey is no longer accepting votes.');
+    }
   }
 
   /**

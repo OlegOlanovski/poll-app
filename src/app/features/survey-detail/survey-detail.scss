@@ -87,7 +87,8 @@
 }
 
 .survey-detail-card__status {
-  width: 94px;
+  width: auto;
+  min-width: 94px;
   height: 26px;
   margin: 0;
   padding: 3px 12px 3px 8px;
@@ -170,6 +171,17 @@
   font-size: 16px;
   font-weight: 500;
   line-height: 20px;
+}
+
+.survey-detail-card__summary > .survey-detail-card__closed-notice {
+  margin-top: 8px;
+  padding: 8px 12px;
+
+  background-color: rgb(255 183 112 / 28%);
+  border-left: 4px solid #ee9236;
+  border-radius: 0 6px 6px 0;
+
+  font-weight: 700;
 }
 
 .survey-voting-form {
@@ -275,6 +287,10 @@
 .survey-answer input:disabled {
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+.survey-answer:has(input:disabled) {
+  cursor: not-allowed;
 }
 
 .survey-answer strong {

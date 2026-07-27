@@ -177,17 +177,17 @@
         (scroll)="updateSurveyScroll($event)"
       >
         @for (survey of filteredSurveys(); track survey.id) {
-          @if (survey.status === 'active') {
-            <a
-              class="survey-link"
-              [routerLink]="['/surveys', survey.id]"
-              [attr.aria-label]="'Open survey ' + survey.title"
-            >
-              <app-survey-list-card [survey]="survey" />
-            </a>
-          } @else {
+          <a
+            class="survey-link"
+            [routerLink]="['/surveys', survey.id]"
+            [attr.aria-label]="
+              survey.status === 'past'
+                ? 'View final results for ' + survey.title
+                : 'Open survey ' + survey.title
+            "
+          >
             <app-survey-list-card [survey]="survey" />
-          }
+          </a>
         }
       </div>
     </div>

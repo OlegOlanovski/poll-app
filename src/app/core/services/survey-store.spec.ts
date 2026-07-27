@@ -54,6 +54,18 @@ describe('SurveyStore', (): void => {
     expect(updatedSurvey?.questions[0].answers[0].votes).toBe(1);
     expect(updatedSurvey?.questions[0].answers[1].votes).toBe(0);
   });
+
+  it('should reject votes for a past survey', async (): Promise<void> => {
+    const pastSurvey = service.getSurveyById('past-team-event');
+
+    if (!pastSurvey) {
+      throw new Error('Expected the past survey to exist.');
+    }
+
+    await expect(service.submitVote(pastSurvey.id, createSelection(pastSurvey))).rejects.toThrow(
+      'This survey is no longer accepting votes.',
+    );
+  });
 });
 
 /** Creates a vote for the first answer of the first question. */

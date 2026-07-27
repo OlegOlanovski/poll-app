@@ -133,7 +133,7 @@ describe('Home', (): void => {
     expect(listShell.classList.contains('survey-browser__list-shell--scrollable')).toBe(true);
   });
 
-  it('should not make past surveys clickable', (): void => {
+  it('should link past surveys to their final results', (): void => {
     component.selectStatus('past');
     fixture.detectChanges();
 
@@ -141,7 +141,8 @@ describe('Home', (): void => {
       '.survey-browser__list .survey-link',
     );
 
-    expect(pastSurveyLinks).toHaveLength(0);
+    expect(pastSurveyLinks).toHaveLength(component.filteredSurveys().length);
+    expect(pastSurveyLinks[0].getAttribute('aria-label')).toContain('View final results');
   });
 
   it('should move the custom scroll thumb with the survey list', (): void => {
