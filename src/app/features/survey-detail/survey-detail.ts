@@ -3,6 +3,10 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { SurveyStore } from '../../core/services/survey-store';
 import { Survey, SurveyAnswer, SurveyQuestion, SurveySelections } from '../../shared/models/survey';
+import {
+  hasCompletedSurvey,
+  markSurveyAsCompleted,
+} from '../../shared/utils/survey-participation-storage';
 
 const DATE_FORMATTER = new Intl.DateTimeFormat('de-DE', {
   day: '2-digit',
@@ -26,7 +30,7 @@ export class SurveyDetail {
   private readonly surveyId = this.route.snapshot.paramMap.get('id') ?? '';
 
   readonly selections = signal<SurveySelections>({});
-  readonly hasSubmitted = signal(false);
+  readonly hasSubmitted = signal(hasCompletedSurvey(this.surveyId));
   readonly isResultsOpen = signal(true);
   readonly isLoading = this.surveyStore.isLoading;
   readonly isSubmitting = signal(false);
@@ -93,7 +97,7 @@ export class SurveyDetail {
    * @returns A promise that resolves after valid selections are submitted.
    */
   async completeSurvey(): Promise<void> {
-    if (!this.canComplete() || this.hasSubmitted()) {
+    if (!this.canComplete() || this.hasSubmitted() || this.isSubmitting()) {
       return;
     }
 
@@ -124,6 +128,7 @@ export class SurveyDetail {
    */
   private async saveVote(): Promise<void> {
     await this.surveyStore.submitVote(this.surveyId, this.selections());
+    markSurveyAsCompleted(this.surveyId);
     this.hasSubmitted.set(true);
   }
 
