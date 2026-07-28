@@ -39,6 +39,36 @@ describe('CreateSurvey', (): void => {
     expect(component.surveyForm.controls.category.invalid).toBe(true);
   });
 
+  it('should reserve the selected category slot without adding DOM elements', (): void => {
+    const slotBeforeSelection = fixture.nativeElement.querySelector(
+      '.create-survey-form__selected-category',
+    ) as HTMLButtonElement;
+
+    component.selectCategory('Team Activities');
+    fixture.detectChanges();
+
+    const slotAfterSelection = fixture.nativeElement.querySelector(
+      '.create-survey-form__selected-category',
+    ) as HTMLButtonElement;
+    expect(slotAfterSelection).toBe(slotBeforeSelection);
+    expect(slotAfterSelection.textContent).toContain('Team Activities');
+    expect(slotAfterSelection.getAttribute('aria-hidden')).toBe('false');
+  });
+
+  it('should close the category menu after an outside click', (): void => {
+    const categoryToggle = fixture.nativeElement.querySelector(
+      '.create-survey-form__category-toggle',
+    ) as HTMLButtonElement;
+
+    categoryToggle.click();
+    expect(component.isCategoryMenuOpen()).toBe(true);
+
+    document.body.click();
+
+    expect(component.isCategoryMenuOpen()).toBe(false);
+    expect(component.surveyForm.controls.category.touched).toBe(true);
+  });
+
   it('should reject an end date in the past', (): void => {
     const endDateControl = component.surveyForm.controls.endDate;
 

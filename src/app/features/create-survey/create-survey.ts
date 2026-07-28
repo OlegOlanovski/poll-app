@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -117,6 +117,17 @@ export class CreateSurvey {
   clearCategory(): void {
     this.surveyForm.controls.category.reset();
     this.surveyForm.controls.category.markAsTouched();
+  }
+
+  /** Closes the category menu when the user clicks outside the category field. */
+  @HostListener('document:click')
+  closeCategoryMenu(): void {
+    if (!this.isCategoryMenuOpen()) {
+      return;
+    }
+
+    this.surveyForm.controls.category.markAsTouched();
+    this.isCategoryMenuOpen.set(false);
   }
 
   /** Adds a new question to the survey. */

@@ -123,7 +123,10 @@
                 </p>
               </div>
 
-              <div class="create-survey-form__field create-survey-form__category">
+              <div
+                class="create-survey-form__field create-survey-form__category"
+                (click)="$event.stopPropagation()"
+              >
                 <label class="visually-hidden" for="survey-category">
                   Choose category
                   <strong aria-label="required">*</strong>
@@ -175,16 +178,21 @@
                   </ul>
                 }
 
-                @if (surveyForm.controls.category.value; as category) {
-                  <button
-                    class="create-survey-form__category-option create-survey-form__selected-category"
-                    type="button"
-                    [attr.aria-label]="'Clear selected category ' + category"
-                    (click)="clearCategory()"
-                  >
-                    {{ category }}
-                  </button>
-                }
+                <button
+                  class="create-survey-form__category-option create-survey-form__selected-category"
+                  type="button"
+                  [style.visibility]="surveyForm.controls.category.value ? 'visible' : 'hidden'"
+                  [disabled]="!surveyForm.controls.category.value"
+                  [attr.aria-hidden]="!surveyForm.controls.category.value"
+                  [attr.aria-label]="
+                    surveyForm.controls.category.value
+                      ? 'Clear selected category ' + surveyForm.controls.category.value
+                      : null
+                  "
+                  (click)="clearCategory()"
+                >
+                  {{ surveyForm.controls.category.value || 'No category selected' }}
+                </button>
 
                 <p
                   class="create-survey-form__error create-survey-form__validation-slot"

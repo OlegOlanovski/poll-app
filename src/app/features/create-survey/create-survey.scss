@@ -1008,7 +1008,7 @@
   }
 
   .create-survey__header {
-    width: min(calc(100% - 32px), 325px);
+    width: min(calc(100% - 48px), 325px);
     min-height: 136px;
 
     align-items: flex-start;
@@ -1036,17 +1036,17 @@
   }
 
   .create-survey__cancel {
-    width: 39px;
-    height: 32px;
-    margin-top: 10px;
-    padding: 4px 8px;
+    width: 36px;
+    height: 30px;
+    margin-top: -2px;
+    padding: 4px 7px;
 
-    flex: 0 0 39px;
+    flex: 0 0 36px;
   }
 
   .create-survey__close-icon {
-    width: 23px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
   }
 
   .create-survey-form {
