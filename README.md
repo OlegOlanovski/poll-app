@@ -2,8 +2,6 @@
 
 A responsive Angular learning project for creating surveys, voting, and viewing live results.
 
-[Live demo](https://oleg-olanovski.developerakademie.net)
-
 ## Features
 
 - active, past, urgent, and category-filtered surveys
