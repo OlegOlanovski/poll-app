@@ -125,12 +125,12 @@ export class CreateSurvey {
   }
 
   /**
-   * Clears the first question or removes any following question.
+   * Removes a question while keeping one required question in the form.
    *
    * @param questionIndex - Zero-based index of the question to clear or delete.
    */
   deleteQuestion(questionIndex: number): void {
-    if (questionIndex === 0) {
+    if (this.questions.length === 1) {
       this.resetQuestion(questionIndex);
       return;
     }

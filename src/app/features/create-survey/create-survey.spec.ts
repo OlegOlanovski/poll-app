@@ -73,6 +73,37 @@ describe('CreateSurvey', (): void => {
     expect(checkbox.checked).toBe(true);
   });
 
+  it('should delete the first question and renumber the remaining questions', (): void => {
+    for (let questionIndex = 0; questionIndex < 5; questionIndex += 1) {
+      if (questionIndex > 0) {
+        component.addQuestion();
+      }
+      component.questions
+        .at(questionIndex)
+        .controls.question.setValue(`Question ${questionIndex + 1}`);
+    }
+
+    component.deleteQuestion(0);
+    fixture.detectChanges();
+
+    expect(component.questions.length).toBe(4);
+    expect(
+      component.questions.controls.map((question) => question.controls.question.value),
+    ).toEqual(['Question 2', 'Question 3', 'Question 4', 'Question 5']);
+    expect(fixture.nativeElement.querySelector('.question-form__header')?.textContent).toContain(
+      '1. Question',
+    );
+  });
+
+  it('should keep and clear the final required question', (): void => {
+    component.questions.at(0).controls.question.setValue('Only question');
+
+    component.deleteQuestion(0);
+
+    expect(component.questions.length).toBe(1);
+    expect(component.questions.at(0).controls.question.value).toBe('');
+  });
+
   it('should reveal reserved validation slots without adding DOM elements', async (): Promise<void> => {
     const compiled = fixture.nativeElement as HTMLElement;
     const slotsBeforePublish = compiled.querySelectorAll('.create-survey-form__validation-slot');
