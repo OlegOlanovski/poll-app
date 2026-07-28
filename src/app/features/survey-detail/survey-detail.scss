@@ -1,6 +1,6 @@
 :host {
   display: block;
-  min-height: 1024px;
+  min-height: max(1024px, 100vh);
   padding-top: 39px;
 
   color: #35273a;

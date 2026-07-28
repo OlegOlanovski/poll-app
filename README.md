@@ -1,95 +1,46 @@
 # Poll App
 
-An Angular learning project for creating surveys, voting, and viewing live results. Survey data
-can be stored in Supabase; when Supabase is not configured, the app automatically uses browser
-`localStorage` for local development.
+A responsive Angular learning project for creating surveys, voting, and viewing live results.
 
-## Extras
+[Live demo](https://oleg-olanovski.developerakademie.net)
 
-- Supabase persistence with Row Level Security and a localStorage fallback
-- live survey results that update after every submitted vote
-- active, past, urgent, and category-filtered survey views
-- responsive desktop, tablet, and mobile layouts
-- accessible keyboard controls and form validation
-- hover animations and a custom survey-list scrollbar
-- 28 unit tests covering components, filtering, voting, and persistence
+## Features
 
-## Supabase setup
+- active, past, urgent, and category-filtered surveys
+- validated survey creation with dynamic questions and answers
+- single-choice and multiple-choice voting with live results
+- Supabase persistence with local fallback data
+- responsive and accessible desktop, tablet, and mobile layouts
+- browser protection against submitting the same survey twice
 
-1. Create a Supabase project.
-2. Open the project SQL Editor and run
-   `supabase/migrations/20260719113000_create_poll_schema.sql`.
-3. Run `supabase/seed.sql` in the SQL Editor to add the demo surveys.
-4. Open **Project Settings → Data API** and copy the Project URL and Publishable key.
-5. Add both public values to `src/environments/environment.ts`:
+## Tech stack
 
-```ts
-export const environment = {
-  supabase: {
-    url: 'https://YOUR_PROJECT.supabase.co',
-    publishableKey: 'YOUR_PUBLISHABLE_KEY',
-  },
-} as const;
-```
+Angular 21, TypeScript, SCSS, Reactive Forms, Supabase, Vitest, and Angular TestBed.
 
-Never put the database password or a `service_role`/secret key in Angular code. The browser uses
-only the public publishable key. Row Level Security is enabled by the migration, and database
-changes are performed through the restricted `create_survey` and `submit_survey_vote` functions.
-
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.9.
-
-## Development server
-
-To start a local development server, run:
+## Run locally
 
 ```bash
-ng serve
+npm install
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open `http://localhost:4200/`.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Tests and build
 
 ```bash
-ng generate component component-name
+npm test -- --watch=false
+npm run build
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The project contains **46 unit and component tests**. E2E tests are not configured.
 
-```bash
-ng generate --help
-```
+## Supabase
 
-## Building
+Run the SQL files from `supabase/migrations/` and `supabase/seed.sql`, then add the public project
+URL and publishable key to `src/environments/environment.ts`.
 
-To build the project run:
+Never add a database password or a `service_role` key to the Angular application.
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The production files are generated in `dist/poll-app/browser/`. For Apache hosting, upload all
+files from this directory, including `.htaccess`.
